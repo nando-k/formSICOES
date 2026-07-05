@@ -16,9 +16,9 @@ class ProponentePersonalController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id_proponente' => 'required|exists:proponentes,id_proponente',
-            'id_persona' => 'required|exists:personas,id_persona',
-            'id_cargo' => 'required|exists:cargos,id_cargo',
+            'id_proponente' => 'required|exists:contratacion.proponentes,id_proponente', // ← CAMBIAR
+            'id_persona' => 'required|exists:persona.personas,id_persona',               // ← CAMBIAR
+            'id_cargo' => 'required|exists:contratacion.cargos,id_cargo',                 // ← CAMBIAR
             'es_firmante' => 'nullable|boolean',
             'orden_firma' => 'nullable|integer',
             'activo' => 'nullable|boolean',
@@ -35,9 +35,9 @@ class ProponentePersonalController extends Controller
     public function update(Request $request, ProponentePersonal $proponentePersonal)
     {
         $validated = $request->validate([
-            'id_proponente' => 'sometimes|exists:proponentes,id_proponente',
-            'id_persona' => 'sometimes|exists:personas,id_persona',
-            'id_cargo' => 'sometimes|exists:cargos,id_cargo',
+            'id_proponente' => 'sometimes|exists:contratacion.proponentes,id_proponente', // ← CAMBIAR
+            'id_persona' => 'sometimes|exists:persona.personas,id_persona',               // ← CAMBIAR
+            'id_cargo' => 'sometimes|exists:contratacion.cargos,id_cargo',                 // ← CAMBIAR
             'es_firmante' => 'nullable|boolean',
             'orden_firma' => 'nullable|integer',
             'activo' => 'nullable|boolean',

@@ -16,8 +16,8 @@ class DocumentoGeneradoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id_convocatoria' => 'required|exists:convocatorias,id_convocatoria',
-            'id_documento_modelo' => 'required|exists:documentos_modelo,id_documento_modelo',
+            'id_convocatoria' => 'required|exists:contratacion.convocatorias,id_convocatoria',   // ← CAMBIAR
+            'id_documento_modelo' => 'required|exists:documentacion.documentos_modelo,id_documento_modelo', // ← CAMBIAR
             'nombre_archivo' => 'required|string|max:255',
             'ruta_archivo' => 'required|string|max:255',
             'fecha_generacion' => 'nullable|date',
@@ -35,8 +35,8 @@ class DocumentoGeneradoController extends Controller
     public function update(Request $request, DocumentoGenerado $documentoGenerado)
     {
         $validated = $request->validate([
-            'id_convocatoria' => 'sometimes|exists:convocatorias,id_convocatoria',
-            'id_documento_modelo' => 'sometimes|exists:documentos_modelo,id_documento_modelo',
+            'id_convocatoria' => 'sometimes|exists:contratacion.convocatorias,id_convocatoria',   // ← CAMBIAR
+            'id_documento_modelo' => 'sometimes|exists:documentacion.documentos_modelo,id_documento_modelo', // ← CAMBIAR
             'nombre_archivo' => 'sometimes|string|max:255',
             'ruta_archivo' => 'sometimes|string|max:255',
             'fecha_generacion' => 'nullable|date',

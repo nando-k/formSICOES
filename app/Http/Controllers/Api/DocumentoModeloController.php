@@ -17,7 +17,7 @@ class DocumentoModeloController extends Controller
     {
         $validated = $request->validate([
             'nombre_modelo' => 'required|string|max:150',
-            'codigo_modelo' => 'required|string|max:50|unique:documentos_modelo,codigo_modelo',
+            'codigo_modelo' => 'required|string|max:50|unique:documentacion.documentos_modelo,codigo_modelo', // ← CAMBIAR
             'descripcion' => 'nullable|string',
             'archivo_template' => 'required|string|max:255',
             'activo' => 'nullable|boolean',
@@ -35,7 +35,7 @@ class DocumentoModeloController extends Controller
     {
         $validated = $request->validate([
             'nombre_modelo' => 'sometimes|string|max:150',
-            'codigo_modelo' => 'sometimes|string|max:50|unique:documentos_modelo,codigo_modelo,' . $documentoModelo->id_documento_modelo . ',id_documento_modelo',
+            'codigo_modelo' => 'sometimes|string|max:50|unique:documentacion.documentos_modelo,codigo_modelo,' . $documentoModelo->id_documento_modelo . ',id_documento_modelo', // ← CAMBIAR
             'descripcion' => 'nullable|string',
             'archivo_template' => 'sometimes|string|max:255',
             'activo' => 'nullable|boolean',

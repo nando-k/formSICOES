@@ -9,6 +9,7 @@ class Entidad extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'contratacion.entidades';   // ← AGREGAR
     protected $primaryKey = 'id_entidad';
 
     protected $fillable = [

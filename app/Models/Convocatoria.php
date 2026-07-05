@@ -9,6 +9,7 @@ class Convocatoria extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'contratacion.convocatorias';   // ← AGREGAR
     protected $primaryKey = 'id_convocatoria';
 
     protected $fillable = [

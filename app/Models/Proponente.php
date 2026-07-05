@@ -9,6 +9,7 @@ class Proponente extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'contratacion.proponentes';   // ← AGREGAR
     protected $primaryKey = 'id_proponente';
 
     protected $fillable = [
@@ -31,7 +32,7 @@ class Proponente extends Model
     {
         return $this->belongsToMany(
             Persona::class,
-            'proponente_personal',
+            'contratacion.proponente_personal',   // ← CAMBIAR: agregar "contratacion."
             'id_proponente',
             'id_persona'
         )->withPivot('id_cargo', 'es_firmante', 'orden_firma')->withTimestamps();

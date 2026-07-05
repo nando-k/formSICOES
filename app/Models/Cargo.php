@@ -9,6 +9,7 @@ class Cargo extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'contratacion.cargos';   // ← AGREGAR
     protected $primaryKey = 'id_cargo';
 
     protected $fillable = ['nombre_cargo', 'descripcion'];

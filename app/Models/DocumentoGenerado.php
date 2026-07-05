@@ -9,6 +9,7 @@ class DocumentoGenerado extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'documentacion.documentos_generados';   // ← AGREGAR
     protected $primaryKey = 'id_documento_generado';
 
     protected $fillable = [

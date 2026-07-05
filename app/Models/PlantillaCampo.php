@@ -9,6 +9,7 @@ class PlantillaCampo extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'documentacion.plantilla_campos';   // ← AGREGAR
     protected $primaryKey = 'id_campo';
 
     protected $fillable = [

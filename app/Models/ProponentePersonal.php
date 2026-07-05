@@ -9,7 +9,7 @@ class ProponentePersonal extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'proponente_personal';
+    protected $table = 'contratacion.proponente_personal';   // ← CAMBIAR (le agregás "contratacion.")
     protected $primaryKey = 'id_proponente_personal';
 
     protected $fillable = [

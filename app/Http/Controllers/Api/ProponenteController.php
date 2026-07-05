@@ -18,7 +18,7 @@ class ProponenteController extends Controller
         $validated = $request->validate([
             'razon_social' => 'nullable|string|max:255',
             'nombre_comercial' => 'nullable|string|max:255',
-            'nit' => 'nullable|string|max:30|unique:proponentes,nit',
+            'nit' => 'nullable|string|max:30|unique:contratacion.proponentes,nit',      // ← CAMBIAR
             'matricula_comercio' => 'nullable|string|max:50',
             'direccion' => 'nullable|string',
             'ciudad' => 'nullable|string|max:100',
@@ -26,7 +26,7 @@ class ProponenteController extends Controller
             'telefono' => 'nullable|string|max:100',
             'correo' => 'nullable|email|max:150',
             'tipo_organizacion' => 'nullable|string|max:100',
-            'representante_legal_id' => 'nullable|exists:personas,id_persona',
+            'representante_legal_id' => 'nullable|exists:persona.personas,id_persona', // ← CAMBIAR
             'activo' => 'nullable|boolean',
         ]);
 
@@ -43,7 +43,7 @@ class ProponenteController extends Controller
         $validated = $request->validate([
             'razon_social' => 'nullable|string|max:255',
             'nombre_comercial' => 'nullable|string|max:255',
-            'nit' => 'nullable|string|max:30|unique:proponentes,nit,' . $proponente->id_proponente . ',id_proponente',
+            'nit' => 'nullable|string|max:30|unique:contratacion.proponentes,nit,' . $proponente->id_proponente . ',id_proponente', // ← CAMBIAR
             'matricula_comercio' => 'nullable|string|max:50',
             'direccion' => 'nullable|string',
             'ciudad' => 'nullable|string|max:100',
@@ -51,7 +51,7 @@ class ProponenteController extends Controller
             'telefono' => 'nullable|string|max:100',
             'correo' => 'nullable|email|max:150',
             'tipo_organizacion' => 'nullable|string|max:100',
-            'representante_legal_id' => 'nullable|exists:personas,id_persona',
+            'representante_legal_id' => 'nullable|exists:persona.personas,id_persona', // ← CAMBIAR
             'activo' => 'nullable|boolean',
         ]);
 

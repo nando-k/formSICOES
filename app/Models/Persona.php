@@ -9,6 +9,8 @@ class Persona extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'persona.personas';   // ← AGREGAR esta línea nueva
+
     protected $primaryKey = 'id_persona';
 
     protected $fillable = [
@@ -25,7 +27,7 @@ class Persona extends Model
     {
         return $this->belongsToMany(
             Proponente::class,
-            'proponente_personal',
+            'contratacion.proponente_personal',   // ← CAMBIAR: agregar el prefijo "contratacion."
             'id_persona',
             'id_proponente'
         )->withPivot('id_cargo', 'es_firmante', 'orden_firma')->withTimestamps();
