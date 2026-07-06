@@ -69,3 +69,11 @@ Route::get('/formularios', function () {
 Route::get('/formularios/preview', function () {
     return view('formularios.preview');
 });
+
+Route::get('/documentos', function () {
+    return view('documentos.index');
+});
+
+Route::get('/documentos/1', function () {
+    return view('documentos.show');
+});
