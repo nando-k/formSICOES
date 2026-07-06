@@ -45,3 +45,19 @@ Route::get('/personal', function () {
 Route::get('/personal/create', function () {
     return view('personal.create');
 });
+
+Route::get('/empresas', function () {
+    return view('empresas.index');
+});
+
+Route::get('/empresas/create', function () {
+    return view('empresas.create');
+});
+
+Route::get('/personal', function () {
+    return view('personal.index');
+});
+
+Route::get('/personal/create', function () {
+    return view('personal.create');
+});
