@@ -33,6 +33,9 @@
                 <a href="/propuestas" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
                     Propuestas
                 </a>
+                <a href="/formularios" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
+                    Formularios
+                </a>
                 <a href="/propuestas/generar" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
                     Generar documentos
                 </a>

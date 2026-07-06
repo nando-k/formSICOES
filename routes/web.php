@@ -61,3 +61,11 @@ Route::get('/personal', function () {
 Route::get('/personal/create', function () {
     return view('personal.create');
 });
+
+Route::get('/formularios', function () {
+    return view('formularios.index');
+});
+
+Route::get('/formularios/preview', function () {
+    return view('formularios.preview');
+});
