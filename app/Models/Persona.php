@@ -9,7 +9,7 @@ class Persona extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'persona.personas';   // ← AGREGAR esta línea nueva
+    protected $table = 'persona.personas';  
 
     protected $primaryKey = 'id_persona';
 
@@ -27,7 +27,7 @@ class Persona extends Model
     {
         return $this->belongsToMany(
             Proponente::class,
-            'contratacion.proponente_personal',   // ← CAMBIAR: agregar el prefijo "contratacion."
+            'contratacion.proponente_personal',   
             'id_persona',
             'id_proponente'
         )->withPivot('id_cargo', 'es_firmante', 'orden_firma')->withTimestamps();
