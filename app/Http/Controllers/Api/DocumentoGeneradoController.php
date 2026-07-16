@@ -5,12 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\DocumentoGenerado;
 use Illuminate\Http\Request;
+use App\Models\Convocatoria;
+use App\Models\DocumentoModelo;
+use App\Services\DocumentoGeneradorService;
 
 class DocumentoGeneradoController extends Controller
 {
     public function index()
     {
         return DocumentoGenerado::with('convocatoria', 'documentoModelo')->get();
+    }
+
+    public function generar(Convocatoria $convocatoria, DocumentoModelo $documentoModelo, DocumentoGeneradorService $generador)
+    {
+        $documento = $generador->generar($convocatoria, $documentoModelo);
+        return $documento->load('convocatoria', 'documentoModelo');
     }
 
     public function store(Request $request)

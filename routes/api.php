@@ -20,3 +20,4 @@ Route::apiResource('proponente-personal', ProponentePersonalController::class);
 Route::apiResource('documentos-modelo', DocumentoModeloController::class);
 Route::apiResource('documentos-generados', DocumentoGeneradoController::class);
 Route::apiResource('plantilla-campos', PlantillaCampoController::class);
+Route::post('convocatorias/{convocatoria}/generar/{documentoModelo}', [DocumentoGeneradoController::class, 'generar']);

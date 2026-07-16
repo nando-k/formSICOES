@@ -27,6 +27,7 @@ class PlantillaCampoSeeder extends Seeder
             ['nombre_campo' => 'razon_social', 'tabla_origen' => 'proponentes', 'campo_origen' => 'razon_social', 'descripcion' => 'Razon social del proponente'],
             ['nombre_campo' => 'nit', 'tabla_origen' => 'proponentes', 'campo_origen' => 'nit', 'descripcion' => 'NIT del proponente'],
             ['nombre_campo' => 'direccion_proponente', 'tabla_origen' => 'proponentes', 'campo_origen' => 'direccion', 'descripcion' => 'Direccion del proponente'],
+            ['nombre_campo' => 'telefono_proponente', 'tabla_origen' => 'proponentes', 'campo_origen' => 'telefono', 'descripcion' => 'Telefono del proponente'],
 
             // Datos del representante legal (persona)
             ['nombre_campo' => 'nombre_representante', 'tabla_origen' => 'personas', 'campo_origen' => 'nombres', 'descripcion' => 'Nombres del representante legal'],
