@@ -25,7 +25,6 @@ class PersonaController extends Controller
             'telefono' => 'nullable|string|max:100',
             'correo' => 'nullable|email|max:150',
             'fecha_nacimiento' => 'nullable|date',
-            'activo' => 'nullable|boolean',
         ]);
 
         return Persona::create($validated);
@@ -48,7 +47,6 @@ class PersonaController extends Controller
             'telefono' => 'nullable|string|max:100',
             'correo' => 'nullable|email|max:150',
             'fecha_nacimiento' => 'nullable|date',
-            'activo' => 'nullable|boolean',
         ]);
 
         $persona->update($validated);
@@ -57,7 +55,7 @@ class PersonaController extends Controller
 
     public function destroy(Persona $persona)
     {
-        $persona->delete(); // soft delete, no borra de verdad
+        $persona->delete(); 
         return response()->noContent();
     }
 }

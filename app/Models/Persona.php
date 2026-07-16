@@ -14,9 +14,25 @@ class Persona extends Model
     protected $primaryKey = 'id_persona';
 
     protected $fillable = [
-        'nombres', 'apellido_paterno', 'apellido_materno', 'ci', 'ci_expedido',
-        'direccion', 'telefono', 'correo', 'fecha_nacimiento', 'activo',
+    'nombres', 'apellido_paterno', 'apellido_materno', 'ci', 'ci_expedido',
+    'direccion', 'telefono', 'correo', 'fecha_nacimiento',
+    // 'activo' eliminado
     ];
+
+    public function creadoPor()
+    {
+        return $this->belongsTo(User::class, 'creado_por_id');
+    }
+
+    public function actualizadoPor()
+    {
+        return $this->belongsTo(User::class, 'actualizado_por_id');
+    }
+
+    public function eliminadoPor()
+    {
+        return $this->belongsTo(User::class, 'eliminado_por_id');
+    }
 
     public function proponentesRepresentados()
     {
