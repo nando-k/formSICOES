@@ -16,8 +16,8 @@ class ConvocatoriaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id_entidad' => 'required|exists:contratacion.entidades,id_entidad',       // ← CAMBIAR
-            'id_proponente' => 'required|exists:contratacion.proponentes,id_proponente', // ← CAMBIAR
+            'id_entidad' => 'required|integer',
+            'id_proponente' => 'required|integer',
             'cite' => 'nullable|string|max:100',
             'numero_convocatoria' => 'required|string|max:150',
             'cuce' => 'nullable|string|max:100',
@@ -43,8 +43,8 @@ class ConvocatoriaController extends Controller
     public function update(Request $request, Convocatoria $convocatoria)
     {
         $validated = $request->validate([
-            'id_entidad' => 'sometimes|exists:contratacion.entidades,id_entidad',       // ← CAMBIAR
-            'id_proponente' => 'sometimes|exists:contratacion.proponentes,id_proponente', // ← CAMBIAR
+            'id_entidad' => 'required|integer',
+            'id_proponente' => 'required|integer',
             'cite' => 'nullable|string|max:100',
             'numero_convocatoria' => 'sometimes|string|max:150',
             'cuce' => 'nullable|string|max:100',
