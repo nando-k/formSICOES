@@ -24,6 +24,9 @@
                 <a href="/empresas" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
                     Empresas
                 </a>
+                <a href="/entidades" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
+                    Entidades
+                </a>
                 <a href="/personal" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
                     Personal
                 </a>

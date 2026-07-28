@@ -81,3 +81,11 @@ Route::get('/documentos/1', function () {
 Route::get('/formularios/generar', function () {
     return view('formularios.generar');
 });
+
+Route::get('/entidades', function () {
+    return view('entidades.index');
+});
+
+Route::get('/entidades/create', function () {
+    return view('entidades.create');
+});
