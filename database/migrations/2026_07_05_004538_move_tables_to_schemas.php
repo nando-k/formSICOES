@@ -7,6 +7,9 @@ return new class extends Migration
 {
     public function up(): void
     {
+        DB::statement("CREATE SCHEMA IF NOT EXISTS persona");
+        DB::statement("CREATE SCHEMA IF NOT EXISTS documentacion");
+        DB::statement("CREATE SCHEMA IF NOT EXISTS seguridad");
         DB::statement("CREATE SCHEMA IF NOT EXISTS contratacion");
 
         $moves = [
@@ -26,17 +29,34 @@ return new class extends Migration
         ];
 
         foreach ($moves as $table => $schema) {
-            DB::statement("ALTER TABLE public.\"{$table}\" SET SCHEMA {$schema}");
+            $exists = DB::select("
+                SELECT to_regclass('public.\"{$table}\"') AS table_name
+            ")[0]->table_name;
+
+            if ($exists) {
+                DB::statement("ALTER TABLE public.\"{$table}\" SET SCHEMA {$schema}");
+            }
         }
     }
 
     public function down(): void
     {
         $schemas = ['persona', 'documentacion', 'seguridad', 'contratacion'];
+
         $tables = [
-            'personas', 'documentos_modelo', 'documentos_generados', 'plantilla_campos',
-            'users', 'password_reset_tokens', 'sessions', 'personal_access_tokens',
-            'entidades', 'cargos', 'proponentes', 'convocatorias', 'proponente_personal',
+            'personas',
+            'documentos_modelo',
+            'documentos_generados',
+            'plantilla_campos',
+            'users',
+            'password_reset_tokens',
+            'sessions',
+            'personal_access_tokens',
+            'entidades',
+            'cargos',
+            'proponentes',
+            'convocatorias',
+            'proponente_personal',
         ];
 
         foreach ($tables as $table) {
