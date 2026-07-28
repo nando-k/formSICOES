@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         Vista previa
                     </a>
 
-                    <button class="px-3 py-2 text-sm rounded-lg bg-slate-900 text-white hover:bg-slate-800">
+                    <a href="/formularios/generar" class="px-3 py-2 text-sm rounded-lg bg-slate-900 text-white hover:bg-slate-800">
                         Usar plantilla
-                    </button>
+                    </a>
                 </div>
             </div>
         `).join('');

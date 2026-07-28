@@ -77,3 +77,7 @@ Route::get('/documentos', function () {
 Route::get('/documentos/1', function () {
     return view('documentos.show');
 });
+
+Route::get('/formularios/generar', function () {
+    return view('formularios.generar');
+});
