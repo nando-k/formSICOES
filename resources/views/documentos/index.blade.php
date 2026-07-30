@@ -50,6 +50,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch('/api/documentos-generados');
         const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data);
+            throw new Error(data.message || 'No se pudieron cargar los documentos.');
+        }
+
         const documentos = Array.isArray(data) ? data : data.data ?? [];
 
         loading.classList.add('hidden');
@@ -67,8 +73,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         documentosBody.innerHTML = documentos.map(documento => {
-            const id = documento.id_documento_generado ?? documento.id;
-            const modelo = documento.documento_modelo?.nombre_modelo ?? documento.documentoModelo?.nombre_modelo ?? 'Sin modelo';
+            const id = documento.id_documento_generado;
+
+            const modelo = documento.documento_modelo?.nombre_modelo ?? 'Sin modelo';
             const convocatoria = documento.convocatoria?.numero_convocatoria ?? 'Sin convocatoria';
 
             return `
@@ -76,14 +83,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="px-5 py-3 font-medium">
                         ${documento.nombre_archivo ?? 'Documento generado'}
                     </td>
-                    <td class="px-5 py-3">${modelo}</td>
-                    <td class="px-5 py-3">${convocatoria}</td>
-                    <td class="px-5 py-3">${documento.fecha_generacion ?? '-'}</td>
-                    <td class="px-5 py-3">${documento.generado_por ?? '-'}</td>
+
+                    <td class="px-5 py-3">
+                        ${modelo}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        ${convocatoria}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        ${documento.fecha_generacion ?? '-'}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        ${documento.generado_por ?? '-'}
+                    </td>
+
                     <td class="px-5 py-3 space-x-2">
                         <a href="/documentos/${id}" class="text-blue-600 hover:underline">
                             Ver
                         </a>
+
                         <a href="/documentos/${id}/descargar" class="text-green-600 hover:underline">
                             Descargar
                         </a>

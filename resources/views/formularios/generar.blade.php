@@ -62,7 +62,7 @@
             </div>
 
             <p class="text-xs text-slate-500">
-                Esta pantalla ya consume datos reales desde la API. La generación final depende del endpoint del backend.
+                Esta pantalla consume datos reales desde la API y genera documentos Word desde las plantillas registradas.
             </p>
         </div>
     </div>
@@ -79,6 +79,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function cargarModelos() {
         const response = await fetch('/api/documentos-modelo');
         const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data);
+            throw new Error(data.message || 'No se pudieron cargar los modelos.');
+        }
+
         const modelos = Array.isArray(data) ? data : data.data ?? [];
 
         documentoModelo.innerHTML = '<option value="">Seleccione un modelo</option>';
@@ -95,6 +101,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function cargarConvocatorias() {
         const response = await fetch('/api/convocatorias');
         const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data);
+            throw new Error(data.message || 'No se pudieron cargar las convocatorias.');
+        }
+
         const convocatorias = Array.isArray(data) ? data : data.data ?? [];
 
         convocatoria.innerHTML = '<option value="">Seleccione una convocatoria</option>';
@@ -169,10 +181,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw new Error(result.message || 'No se pudo generar el documento.');
             }
 
+            const documentoGeneradoId = result.id_documento_generado;
+
             mostrarMensaje(`
                 <strong>Documento generado correctamente.</strong><br>
                 Archivo: ${result.nombre_archivo ?? 'Archivo generado'}<br>
                 Ruta: ${result.ruta_archivo ?? 'Sin ruta registrada'}
+
+                <div class="mt-4 flex gap-3 flex-wrap">
+                    <a href="/documentos/${documentoGeneradoId}"
+                       class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        Ver detalle
+                    </a>
+
+                    <a href="/documentos/${documentoGeneradoId}/descargar"
+                       class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        Descargar Word
+                    </a>
+
+                    <a href="/documentos"
+                       class="inline-block bg-slate-700 text-white px-4 py-2 rounded-lg hover:bg-slate-800">
+                        Ver historial
+                    </a>
+                </div>
             `, 'success');
 
         } catch (error) {
