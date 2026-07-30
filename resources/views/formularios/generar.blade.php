@@ -85,8 +85,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         modelos.forEach(modelo => {
             documentoModelo.innerHTML += `
-                <option value="${modelo.id}">
-                    ${modelo.codigo_modelo ?? modelo.codigo ?? 'Modelo'} - ${modelo.nombre_modelo ?? modelo.nombre ?? 'Sin nombre'}
+                <option value="${modelo.id_documento_modelo}">
+                    ${modelo.codigo_modelo ?? 'Modelo'} - ${modelo.nombre_modelo ?? 'Sin nombre'}
                 </option>
             `;
         });
@@ -105,25 +105,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         convocatorias.forEach(item => {
+            const entidad = item.entidad?.nombre_entidad ?? 'Sin entidad';
+
             convocatoria.innerHTML += `
-                <option value="${item.id}">
-                    ${item.nro_convocatoria ?? 'Sin número'} - ${item.entidad_convocante ?? 'Sin entidad'}
+                <option value="${item.id_convocatoria}">
+                    ${item.numero_convocatoria ?? 'Sin número'} - ${entidad}
                 </option>
             `;
         });
     }
 
     function mostrarMensaje(texto, tipo = 'info') {
-        mensaje.classList.remove('hidden', 'bg-green-50', 'text-green-700', 'border-green-200', 'bg-red-50', 'text-red-700', 'border-red-200');
+        mensaje.classList.remove(
+            'hidden',
+            'bg-green-50',
+            'text-green-700',
+            'border-green-200',
+            'bg-red-50',
+            'text-red-700',
+            'border-red-200',
+            'bg-blue-50',
+            'text-blue-700',
+            'border-blue-200'
+        );
+
         mensaje.classList.add('border');
 
         if (tipo === 'error') {
             mensaje.classList.add('bg-red-50', 'text-red-700', 'border-red-200');
-        } else {
+        } else if (tipo === 'success') {
             mensaje.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
+        } else {
+            mensaje.classList.add('bg-blue-50', 'text-blue-700', 'border-blue-200');
         }
 
-        mensaje.textContent = texto;
+        mensaje.innerHTML = texto;
     }
 
     btnGenerar.addEventListener('click', async () => {
@@ -135,7 +151,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        mostrarMensaje('Datos listos para enviar al backend. Próximo paso: conectar el POST de generación.', 'success');
+        btnGenerar.disabled = true;
+        btnGenerar.textContent = 'Generando...';
+
+        try {
+            const response = await fetch(`/api/convocatorias/${convocatoriaId}/generar/${documentoModeloId}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                }
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error(result);
+                throw new Error(result.message || 'No se pudo generar el documento.');
+            }
+
+            mostrarMensaje(`
+                <strong>Documento generado correctamente.</strong><br>
+                Archivo: ${result.nombre_archivo ?? 'Archivo generado'}<br>
+                Ruta: ${result.ruta_archivo ?? 'Sin ruta registrada'}
+            `, 'success');
+
+        } catch (error) {
+            mostrarMensaje(error.message, 'error');
+        } finally {
+            btnGenerar.disabled = false;
+            btnGenerar.textContent = 'Generar documento';
+        }
     });
 
     try {

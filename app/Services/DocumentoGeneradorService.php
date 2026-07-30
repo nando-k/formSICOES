@@ -45,7 +45,15 @@ class DocumentoGeneradorService
 
         // Guardamos el archivo generado con un nombre unico
         $nombreArchivo = $documentoModelo->codigo_modelo . '_' . $convocatoria->id_convocatoria . '_' . time() . '.docx';
-        $rutaDestino = storage_path('app/generados/' . $nombreArchivo);
+
+        $directorioGenerados = storage_path('app/generados');
+
+        if (!is_dir($directorioGenerados)) {
+            mkdir($directorioGenerados, 0755, true);
+        }
+
+        $rutaDestino = $directorioGenerados . DIRECTORY_SEPARATOR . $nombreArchivo;
+
         $processor->saveAs($rutaDestino);
 
         // Registramos el documento generado en la base
