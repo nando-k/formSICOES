@@ -3,83 +3,161 @@
 @section('title', 'Nuevo personal')
 
 @section('content')
-<div class="bg-white rounded-xl shadow-sm border p-6 max-w-5xl">
-    <h3 class="text-lg font-semibold mb-1">Datos del personal</h3>
-    <p class="text-sm text-slate-500 mb-6">
-        Registre los datos de las personas que participarán en las propuestas.
-    </p>
+<div class="space-y-6">
 
-    <form id="personalForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div>
-            <label class="block text-sm font-medium mb-1">Nombres</label>
-            <input name="nombres" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Sandra Irene" required>
-        </div>
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-900 p-7 shadow-xl">
+        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-emerald-400/20 blur-3xl"></div>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">Apellido paterno</label>
-            <input name="apellido_paterno" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Rodríguez">
-        </div>
+        <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            <div>
+                <p class="text-emerald-300 text-sm font-medium mb-2">
+                    Registro de equipo técnico
+                </p>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">Apellido materno</label>
-            <input name="apellido_materno" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Callisaya">
-        </div>
+                <h3 class="text-2xl font-bold text-white">
+                    Nuevo personal
+                </h3>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">Cédula de identidad</label>
-            <input name="ci" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="4791992">
-        </div>
+                <p class="text-slate-300 mt-2 max-w-2xl">
+                    Registre los datos de las personas que participarán en las propuestas y documentos generados.
+                </p>
+            </div>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">Expedido</label>
-            <select name="expedido" class="w-full border rounded-lg px-3 py-2">
-                <option value="">Seleccione</option>
-                <option value="LP">LP</option>
-                <option value="CB">CB</option>
-                <option value="SC">SC</option>
-                <option value="OR">OR</option>
-                <option value="PT">PT</option>
-                <option value="CH">CH</option>
-                <option value="TJ">TJ</option>
-                <option value="BN">BN</option>
-                <option value="PD">PD</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Teléfono</label>
-            <input name="telefono" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="73008644">
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Correo electrónico</label>
-            <input name="correo" type="email" class="w-full border rounded-lg px-3 py-2" placeholder="correo@empresa.com">
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Profesión</label>
-            <input name="profesion" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Auditor financiero">
-        </div>
-
-        <div class="md:col-span-2">
-            <label class="block text-sm font-medium mb-1">Dirección</label>
-            <textarea name="direccion" class="w-full border rounded-lg px-3 py-2" rows="2" placeholder="Dirección de la persona"></textarea>
-        </div>
-
-        <div class="md:col-span-2">
-            <div id="mensaje" class="hidden rounded-lg p-4 text-sm"></div>
-        </div>
-
-        <div class="md:col-span-2 flex justify-end gap-3 pt-4">
-            <a href="/personal" class="px-4 py-2 rounded-lg border">
-                Cancelar
+            <a href="/personal" class="bg-white/10 text-white px-5 py-3 rounded-2xl hover:bg-white/20 border border-white/10 text-center">
+                Volver al listado
             </a>
-
-            <button type="submit" id="btnGuardar" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                Guardar personal
-            </button>
         </div>
-    </form>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden max-w-6xl">
+        <div class="px-6 py-5 border-b border-slate-100">
+            <h4 class="font-bold text-slate-900">Datos del personal</h4>
+            <p class="text-sm text-slate-500 mt-1">
+                Complete la información principal de la persona.
+            </p>
+        </div>
+
+        <form id="personalForm" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Nombres</label>
+                <input 
+                    name="nombres" 
+                    type="text" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                    placeholder="Sandra Irene" 
+                    required
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Apellido paterno</label>
+                <input 
+                    name="apellido_paterno" 
+                    type="text" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                    placeholder="Rodríguez"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Apellido materno</label>
+                <input 
+                    name="apellido_materno" 
+                    type="text" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                    placeholder="Callisaya"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Cédula de identidad</label>
+                <input 
+                    name="ci" 
+                    type="text" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                    placeholder="4791992"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Expedido</label>
+                <select 
+                    name="expedido" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                >
+                    <option value="">Seleccione</option>
+                    <option value="LP">LP</option>
+                    <option value="CB">CB</option>
+                    <option value="SC">SC</option>
+                    <option value="OR">OR</option>
+                    <option value="PT">PT</option>
+                    <option value="CH">CH</option>
+                    <option value="TJ">TJ</option>
+                    <option value="BN">BN</option>
+                    <option value="PD">PD</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Teléfono</label>
+                <input 
+                    name="telefono" 
+                    type="text" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                    placeholder="73008644"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Correo electrónico</label>
+                <input 
+                    name="correo" 
+                    type="email" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                    placeholder="correo@empresa.com"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Profesión</label>
+                <input 
+                    name="profesion" 
+                    type="text" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                    placeholder="Auditor financiero"
+                >
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Dirección</label>
+                <textarea 
+                    name="direccion" 
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" 
+                    rows="2" 
+                    placeholder="Dirección de la persona"
+                ></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+                <div id="mensaje" class="hidden rounded-2xl p-4 text-sm border"></div>
+            </div>
+
+            <div class="md:col-span-2 flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-slate-100">
+                <a href="/personal" class="px-5 py-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-center">
+                    Cancelar
+                </a>
+
+                <button 
+                    type="submit" 
+                    id="btnGuardar" 
+                    class="bg-emerald-600 text-white px-5 py-3 rounded-2xl hover:bg-emerald-500 shadow-lg shadow-emerald-950/20 font-semibold transition"
+                >
+                    Guardar personal
+                </button>
+            </div>
+        </form>
+    </div>
+
 </div>
 
 <script>
@@ -157,11 +235,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(errores || result.message || 'No se pudo guardar el personal.');
             }
 
-            mostrarMensaje('Personal registrado correctamente.', 'success');
+            mostrarMensaje('Personal registrado correctamente. Redirigiendo...', 'success');
 
             setTimeout(() => {
                 window.location.href = '/personal';
-            }, 700);
+            }, 900);
 
         } catch (error) {
             mostrarMensaje(error.message, 'error');
