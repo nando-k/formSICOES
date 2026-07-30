@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error(documento.message || 'No se pudo cargar el documento.');
         }
 
-        const id = documento.id_documento_generado ?? documento.id;
+        const id = documentoId;
 
         document.getElementById('nombreArchivo').textContent = documento.nombre_archivo ?? 'Documento generado';
         document.getElementById('rutaArchivo').textContent = documento.ruta_archivo ?? 'Sin ruta registrada';
