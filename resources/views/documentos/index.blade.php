@@ -3,41 +3,55 @@
 @section('title', 'Documentos generados')
 
 @section('content')
-<div class="flex justify-between items-center mb-5">
-    <div>
-        <h3 class="text-lg font-semibold">Historial de documentos generados</h3>
-        <p class="text-sm text-slate-500">
-            Documentos generados desde las plantillas Word.
-        </p>
+<div class="space-y-6">
+
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-900 p-7 shadow-xl">
+        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-emerald-400/20 blur-3xl"></div>
+
+        <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            <div>
+                <p class="text-emerald-300 text-sm font-medium mb-2">
+                    Historial documental
+                </p>
+
+                <h3 class="text-2xl font-bold text-white">
+                    Documentos generados
+                </h3>
+
+                <p class="text-slate-300 mt-2 max-w-2xl">
+                    Consulte, revise y descargue los documentos Word generados desde las plantillas del sistema.
+                </p>
+            </div>
+
+            <a href="/formularios/generar" class="bg-emerald-500 text-white px-5 py-3 rounded-2xl hover:bg-emerald-400 shadow-lg shadow-emerald-950/30 font-semibold text-center">
+                Generar nuevo
+            </a>
+        </div>
     </div>
 
-    <a href="/formularios/generar" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-        Generar nuevo
-    </a>
-</div>
+    <div id="loading" class="bg-white border border-slate-200 rounded-3xl p-6 text-slate-500 shadow-sm">
+        Cargando documentos generados...
+    </div>
 
-<div id="loading" class="bg-white border rounded-xl p-6 text-slate-500">
-    Cargando documentos generados...
-</div>
+    <div id="error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-3xl p-5">
+        No se pudieron cargar los documentos generados.
+    </div>
 
-<div id="error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl p-5">
-    No se pudieron cargar los documentos generados.
-</div>
+    <div id="tablaContainer" class="hidden bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
+            <div>
+                <h4 class="font-bold text-slate-900">Historial de documentos</h4>
+                <p class="text-sm text-slate-500">Archivos generados desde plantillas Word.</p>
+            </div>
 
-<div id="tablaContainer" class="hidden bg-white rounded-xl shadow-sm border overflow-hidden">
-    <table class="w-full text-sm">
-        <thead class="bg-slate-50 text-slate-500">
-            <tr>
-                <th class="text-left px-5 py-3">Documento</th>
-                <th class="text-left px-5 py-3">Modelo</th>
-                <th class="text-left px-5 py-3">Convocatoria</th>
-                <th class="text-left px-5 py-3">Fecha</th>
-                <th class="text-left px-5 py-3">Generado por</th>
-                <th class="text-left px-5 py-3">Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="documentosBody"></tbody>
-    </table>
+            <span id="totalDocumentos" class="text-sm bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full font-medium">
+                0 registros
+            </span>
+        </div>
+
+        <div id="documentosBody" class="divide-y divide-slate-100"></div>
+    </div>
+
 </div>
 
 <script>
@@ -46,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const error = document.getElementById('error');
     const tablaContainer = document.getElementById('tablaContainer');
     const documentosBody = document.getElementById('documentosBody');
+    const totalDocumentos = document.getElementById('totalDocumentos');
 
     try {
         const response = await fetch('/api/documentos-generados');
@@ -61,55 +76,67 @@ document.addEventListener('DOMContentLoaded', async () => {
         loading.classList.add('hidden');
         tablaContainer.classList.remove('hidden');
 
+        totalDocumentos.textContent = `${documentos.length} registro${documentos.length === 1 ? '' : 's'}`;
+
         if (documentos.length === 0) {
             documentosBody.innerHTML = `
-                <tr>
-                    <td colspan="6" class="px-5 py-6 text-center text-slate-500">
-                        No hay documentos generados todavía.
-                    </td>
-                </tr>
+                <div class="px-6 py-8 text-center text-slate-500">
+                    No hay documentos generados todavía.
+                </div>
             `;
             return;
         }
 
-        documentosBody.innerHTML = documentos.map(documento => {
+        documentosBody.innerHTML = documentos.slice().reverse().map(documento => {
             const id = documento.id_documento_generado;
-
             const modelo = documento.documento_modelo?.nombre_modelo ?? 'Sin modelo';
+            const codigoModelo = documento.documento_modelo?.codigo_modelo ?? 'Modelo';
             const convocatoria = documento.convocatoria?.numero_convocatoria ?? 'Sin convocatoria';
 
             return `
-                <tr class="border-t">
-                    <td class="px-5 py-3 font-medium">
-                        ${documento.nombre_archivo ?? 'Documento generado'}
-                    </td>
+                <div class="p-6 hover:bg-slate-50 transition">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-black">
+                                W
+                            </div>
 
-                    <td class="px-5 py-3">
-                        ${modelo}
-                    </td>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                    <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">
+                                        ${codigoModelo}
+                                    </span>
 
-                    <td class="px-5 py-3">
-                        ${convocatoria}
-                    </td>
+                                    <span class="text-xs text-slate-400">
+                                        ${documento.fecha_generacion ?? '-'}
+                                    </span>
+                                </div>
 
-                    <td class="px-5 py-3">
-                        ${documento.fecha_generacion ?? '-'}
-                    </td>
+                                <p class="font-bold text-slate-900 break-all">
+                                    ${documento.nombre_archivo ?? 'Documento generado'}
+                                </p>
 
-                    <td class="px-5 py-3">
-                        ${documento.generado_por ?? '-'}
-                    </td>
+                                <p class="text-sm text-slate-500 mt-1">
+                                    ${modelo} · ${convocatoria}
+                                </p>
 
-                    <td class="px-5 py-3 space-x-2">
-                        <a href="/documentos/${id}" class="text-blue-600 hover:underline">
-                            Ver
-                        </a>
+                                <p class="text-xs text-slate-400 mt-2">
+                                    Generado por: ${documento.generado_por ?? '-'}
+                                </p>
+                            </div>
+                        </div>
 
-                        <a href="/documentos/${id}/descargar" class="text-green-600 hover:underline">
-                            Descargar
-                        </a>
-                    </td>
-                </tr>
+                        <div class="flex gap-2 shrink-0">
+                            <a href="/documentos/${id}" class="px-4 py-2 rounded-2xl border border-slate-200 hover:bg-white text-sm font-medium">
+                                Ver detalle
+                            </a>
+
+                            <a href="/documentos/${id}/descargar" class="px-4 py-2 rounded-2xl bg-emerald-600 text-white hover:bg-emerald-500 text-sm font-semibold">
+                                Descargar
+                            </a>
+                        </div>
+                    </div>
+                </div>
             `;
         }).join('');
 
