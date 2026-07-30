@@ -3,68 +3,119 @@
 @section('title', 'Generar documento')
 
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="space-y-6">
 
-    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border p-6">
-        <h3 class="text-lg font-semibold mb-1">Generar documento desde plantilla</h3>
-        <p class="text-sm text-slate-500 mb-6">
-            Seleccione la convocatoria y el modelo de documento que desea generar.
-        </p>
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-900 p-7 shadow-xl">
+        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-emerald-400/20 blur-3xl"></div>
 
-        <form class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
             <div>
-                <label class="block text-sm font-medium mb-1">Modelo de documento</label>
-                <select id="documentoModelo" class="w-full border rounded-lg px-3 py-2">
-                    <option value="">Cargando modelos...</option>
-                </select>
+                <p class="text-emerald-300 text-sm font-medium mb-2">
+                    Generación automática
+                </p>
+
+                <h3 class="text-2xl font-bold text-white">
+                    Generar documento Word
+                </h3>
+
+                <p class="text-slate-300 mt-2 max-w-2xl">
+                    Seleccione una convocatoria y una plantilla para generar un documento Word con datos reales del sistema.
+                </p>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium mb-1">Convocatoria</label>
-                <select id="convocatoria" class="w-full border rounded-lg px-3 py-2">
-                    <option value="">Cargando convocatorias...</option>
-                </select>
-            </div>
-
-            <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-1">Observación</label>
-                <textarea class="w-full border rounded-lg px-3 py-2" rows="3" placeholder="Observación opcional para el documento generado"></textarea>
-            </div>
-
-            <div class="md:col-span-2 flex justify-end gap-3 pt-4">
-                <a href="/formularios" class="px-4 py-2 rounded-lg border">
-                    Cancelar
-                </a>
-
-                <button type="button" id="btnGenerar" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-                    Generar documento
-                </button>
-            </div>
-        </form>
-
-        <div id="mensaje" class="hidden mt-5 rounded-lg p-4 text-sm"></div>
+            <a href="/documentos" class="bg-white/10 text-white px-5 py-3 rounded-2xl hover:bg-white/20 border border-white/10 text-center">
+                Ver historial
+            </a>
+        </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-        <h3 class="font-semibold mb-4">Funcionamiento</h3>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        <div class="space-y-4 text-sm text-slate-600">
-            <p>
-                El sistema tomará los datos registrados de la convocatoria y los insertará en la plantilla Word seleccionada.
-            </p>
-
-            <div class="border rounded-lg p-4 bg-slate-50">
-                <p class="font-medium text-slate-800 mb-2">Flujo:</p>
-                <p>1. Seleccionar modelo</p>
-                <p>2. Seleccionar convocatoria</p>
-                <p>3. Generar documento</p>
-                <p>4. Descargar archivo final</p>
+        <div class="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-5 border-b border-slate-100">
+                <h4 class="font-bold text-slate-900">Datos para generar documento</h4>
+                <p class="text-sm text-slate-500 mt-1">
+                    Seleccione el modelo y la convocatoria que alimentará la plantilla Word.
+                </p>
             </div>
 
-            <p class="text-xs text-slate-500">
-                Esta pantalla consume datos reales desde la API y genera documentos Word desde las plantillas registradas.
-            </p>
+            <form class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Modelo de documento</label>
+                    <select id="documentoModelo" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        <option value="">Cargando modelos...</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Convocatoria</label>
+                    <select id="convocatoria" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        <option value="">Cargando convocatorias...</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Observación</label>
+                    <textarea class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" rows="3" placeholder="Observación opcional para el documento generado"></textarea>
+                </div>
+
+                <div class="md:col-span-2">
+                    <div id="mensaje" class="hidden rounded-2xl p-4 text-sm border"></div>
+                </div>
+
+                <div class="md:col-span-2 flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-slate-100">
+                    <a href="/formularios" class="px-5 py-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-center">
+                        Cancelar
+                    </a>
+
+                    <button type="button" id="btnGenerar" class="bg-emerald-600 text-white px-5 py-3 rounded-2xl hover:bg-emerald-500 shadow-lg shadow-emerald-950/20 font-semibold transition">
+                        Generar documento
+                    </button>
+                </div>
+            </form>
         </div>
+
+        <div class="rounded-3xl border border-emerald-100 bg-gradient-to-br from-white to-emerald-50 p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black shadow-lg shadow-emerald-950/20">
+                    ✓
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-slate-900">Funcionamiento</h3>
+                    <p class="text-xs text-slate-500">
+                        Flujo de generación Word
+                    </p>
+                </div>
+            </div>
+
+            <p class="text-sm text-slate-600 leading-relaxed mb-5">
+                El sistema toma los datos registrados de la convocatoria, la entidad y el proponente, y los inserta automáticamente en la plantilla seleccionada.
+            </p>
+
+            <div class="space-y-3">
+                <div class="flex items-center gap-3 rounded-2xl bg-white border border-emerald-100 px-4 py-3">
+                    <span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">1</span>
+                    <span class="text-sm text-slate-700">Seleccionar modelo</span>
+                </div>
+
+                <div class="flex items-center gap-3 rounded-2xl bg-white border border-emerald-100 px-4 py-3">
+                    <span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">2</span>
+                    <span class="text-sm text-slate-700">Seleccionar convocatoria</span>
+                </div>
+
+                <div class="flex items-center gap-3 rounded-2xl bg-white border border-emerald-100 px-4 py-3">
+                    <span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">3</span>
+                    <span class="text-sm text-slate-700">Generar documento Word</span>
+                </div>
+
+                <div class="flex items-center gap-3 rounded-2xl bg-white border border-emerald-100 px-4 py-3">
+                    <span class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">4</span>
+                    <span class="text-sm text-slate-700">Descargar archivo final</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -190,17 +241,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 <div class="mt-4 flex gap-3 flex-wrap">
                     <a href="/documentos/${documentoGeneradoId}"
-                       class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                       class="inline-block bg-blue-600 text-white px-4 py-2 rounded-2xl hover:bg-blue-500">
                         Ver detalle
                     </a>
 
                     <a href="/documentos/${documentoGeneradoId}/descargar"
-                       class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                       class="inline-block bg-emerald-600 text-white px-4 py-2 rounded-2xl hover:bg-emerald-500">
                         Descargar Word
                     </a>
 
                     <a href="/documentos"
-                       class="inline-block bg-slate-700 text-white px-4 py-2 rounded-lg hover:bg-slate-800">
+                       class="inline-block bg-slate-800 text-white px-4 py-2 rounded-2xl hover:bg-slate-700">
                         Ver historial
                     </a>
                 </div>
