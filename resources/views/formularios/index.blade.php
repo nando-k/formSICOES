@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
 
                     <div class="flex justify-end">
-                        <a href="/formularios/generar" class="px-4 py-3 text-sm rounded-2xl bg-slate-900 text-white hover:bg-slate-800 font-semibold">
+                        <a href="/formularios/generar?modelo=${formulario.id_documento_modelo}" class="px-4 py-3 text-sm rounded-2xl bg-slate-900 text-white hover:bg-slate-800 font-semibold">
                             Usar plantilla
                         </a>
                     </div>

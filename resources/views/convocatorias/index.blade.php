@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </td>
 
                     <td class="px-6 py-4">
-                        <a href="/formularios/generar" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm">
+                        <a href="/formularios/generar?convocatoria=${item.id_convocatoria}" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm">
                             Generar
                         </a>
                     </td>

@@ -268,6 +268,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         await cargarModelos();
         await cargarConvocatorias();
+
+        const params = new URLSearchParams(window.location.search);
+
+        const modeloSeleccionado = params.get('modelo');
+        const convocatoriaSeleccionada = params.get('convocatoria');
+
+        if (modeloSeleccionado) {
+            documentoModelo.value = modeloSeleccionado;
+        }
+
+        if (convocatoriaSeleccionada) {
+            convocatoria.value = convocatoriaSeleccionada;
+        }
+
     } catch (error) {
         console.error(error);
         mostrarMensaje('No se pudieron cargar los datos desde la API.', 'error');
