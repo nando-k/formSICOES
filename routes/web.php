@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\DocumentoGenerado;
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -74,8 +75,20 @@ Route::get('/documentos', function () {
     return view('documentos.index');
 });
 
-Route::get('/documentos/1', function () {
-    return view('documentos.show');
+Route::get('/documentos/{id}', function ($id) {
+    return view('documentos.show', ['id' => $id]);
+});
+
+Route::get('/documentos/{id}/descargar', function ($id) {
+    $documento = DocumentoGenerado::findOrFail($id);
+
+    $ruta = storage_path('app/' . $documento->ruta_archivo);
+
+    if (!file_exists($ruta)) {
+        abort(404, 'El archivo no existe en el servidor.');
+    }
+
+    return response()->download($ruta, $documento->nombre_archivo);
 });
 
 Route::get('/formularios/generar', function () {
