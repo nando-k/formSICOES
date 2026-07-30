@@ -3,122 +3,130 @@
 @section('title', 'Detalle del documento')
 
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="mb-5">
+    <a href="/documentos" class="text-sm text-blue-600 hover:underline">
+        ← Volver al historial
+    </a>
+</div>
 
-    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border p-6">
-        <div class="flex justify-between items-start mb-6">
+<div id="loading" class="bg-white border rounded-xl p-6 text-slate-500">
+    Cargando detalle del documento...
+</div>
+
+<div id="error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl p-5">
+    No se pudo cargar el detalle del documento.
+</div>
+
+<div id="detalle" class="hidden space-y-5">
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+        <div class="flex justify-between items-start gap-4">
             <div>
-                <h3 class="text-lg font-semibold">Carta de presentación técnica</h3>
-                <p class="text-sm text-slate-500">
-                    Documento generado para la propuesta CH LP - 085/2023.
-                </p>
+                <h3 id="nombreArchivo" class="text-xl font-semibold text-slate-800">
+                    Documento generado
+                </h3>
+                <p id="rutaArchivo" class="text-sm text-slate-500 mt-1"></p>
             </div>
 
-            <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-700">
-                Generado
-            </span>
+            <a id="btnDescargar" href="#" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                Descargar Word
+            </a>
         </div>
+    </div>
 
-        <div class="border rounded-xl p-5 bg-slate-50">
-            <h4 class="font-semibold mb-4">Información del archivo</h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+            <h4 class="font-semibold mb-4 text-slate-700">Información del documento</h4>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-3 text-sm">
                 <div>
-                    <p class="text-slate-500">Nombre del archivo</p>
-                    <p class="font-medium">carta_presentacion_tecnica_CH_LP_085_2023.docx</p>
-                </div>
-
-                <div>
-                    <p class="text-slate-500">Formato</p>
-                    <p class="font-medium">DOCX</p>
+                    <p class="text-slate-500">Modelo</p>
+                    <p id="modelo" class="font-medium text-slate-800">-</p>
                 </div>
 
                 <div>
                     <p class="text-slate-500">Fecha de generación</p>
-                    <p class="font-medium">30/06/2023 10:35</p>
+                    <p id="fecha" class="font-medium text-slate-800">-</p>
                 </div>
 
                 <div>
                     <p class="text-slate-500">Generado por</p>
-                    <p class="font-medium">Usuario Operativo</p>
-                </div>
-
-                <div>
-                    <p class="text-slate-500">Estado</p>
-                    <p class="font-medium">Listo para descarga</p>
-                </div>
-
-                <div>
-                    <p class="text-slate-500">Versión</p>
-                    <p class="font-medium">1</p>
+                    <p id="generadoPor" class="font-medium text-slate-800">-</p>
                 </div>
             </div>
         </div>
 
-        <div class="mt-6 border rounded-xl p-5">
-            <h4 class="font-semibold mb-4">Datos usados para generar el documento</h4>
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+            <h4 class="font-semibold mb-4 text-slate-700">Convocatoria relacionada</h4>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div class="space-y-3 text-sm">
                 <div>
-                    <p class="text-slate-500">Empresa</p>
-                    <p class="font-medium">CIDSAF S.R.L.</p>
-                </div>
-
-                <div>
-                    <p class="text-slate-500">Entidad</p>
-                    <p class="font-medium">Caja Nacional de Salud</p>
-                </div>
-
-                <div>
-                    <p class="text-slate-500">Convocatoria</p>
-                    <p class="font-medium">CH LP - 085/2023</p>
+                    <p class="text-slate-500">Número de convocatoria</p>
+                    <p id="numeroConvocatoria" class="font-medium text-slate-800">-</p>
                 </div>
 
                 <div>
                     <p class="text-slate-500">CUCE</p>
-                    <p class="font-medium">23-1404-00-1345364-1-1</p>
+                    <p id="cuce" class="font-medium text-slate-800">-</p>
                 </div>
 
                 <div>
-                    <p class="text-slate-500">Representante legal</p>
-                    <p class="font-medium">Sandra Irene Rodríguez Callisaya</p>
-                </div>
-
-                <div>
-                    <p class="text-slate-500">Fecha de presentación</p>
-                    <p class="font-medium">30/06/2023</p>
+                    <p class="text-slate-500">Objeto</p>
+                    <p id="objeto" class="font-medium text-slate-800">-</p>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="space-y-5">
-        <div class="bg-white rounded-xl shadow-sm border p-5">
-            <h3 class="font-semibold mb-4">Acciones</h3>
-
-            <div class="space-y-3">
-                <button class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-                    Descargar Word
-                </button>
-
-                <button class="w-full bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Descargar PDF
-                </button>
-
-                <a href="/formularios/preview" class="block text-center w-full border px-4 py-2 rounded-lg hover:bg-slate-50">
-                    Ver vista previa
-                </a>
-
-                <a href="/documentos" class="block text-center w-full border px-4 py-2 rounded-lg hover:bg-slate-50">
-                    Volver al historial
-                </a>
-            </div>
-        </div>
-
-        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800">
-            En una versión final, esta sección permitirá descargar el archivo generado desde el servidor.
-        </div>
-    </div>
-
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const documentoId = @json($id);
+
+    const loading = document.getElementById('loading');
+    const error = document.getElementById('error');
+    const detalle = document.getElementById('detalle');
+
+    try {
+        const response = await fetch(`/api/documentos-generados/${documentoId}`);
+        const documento = await response.json();
+
+        if (!response.ok) {
+            console.error(documento);
+            throw new Error(documento.message || 'No se pudo cargar el documento.');
+        }
+
+        const id = documento.id_documento_generado ?? documento.id;
+
+        document.getElementById('nombreArchivo').textContent = documento.nombre_archivo ?? 'Documento generado';
+        document.getElementById('rutaArchivo').textContent = documento.ruta_archivo ?? 'Sin ruta registrada';
+
+        document.getElementById('modelo').textContent =
+            documento.documento_modelo?.nombre_modelo ??
+            documento.documentoModelo?.nombre_modelo ??
+            'Sin modelo';
+
+        document.getElementById('fecha').textContent = documento.fecha_generacion ?? '-';
+        document.getElementById('generadoPor').textContent = documento.generado_por ?? '-';
+
+        document.getElementById('numeroConvocatoria').textContent =
+            documento.convocatoria?.numero_convocatoria ?? '-';
+
+        document.getElementById('cuce').textContent =
+            documento.convocatoria?.cuce ?? '-';
+
+        document.getElementById('objeto').textContent =
+            documento.convocatoria?.objeto ?? '-';
+
+        document.getElementById('btnDescargar').href = `/documentos/${id}/descargar`;
+
+        loading.classList.add('hidden');
+        detalle.classList.remove('hidden');
+
+    } catch (e) {
+        console.error(e);
+        loading.classList.add('hidden');
+        error.classList.remove('hidden');
+    }
+});
+</script>
 @endsection
