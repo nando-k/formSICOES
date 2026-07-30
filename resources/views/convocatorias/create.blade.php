@@ -3,102 +3,134 @@
 @section('title', 'Nueva convocatoria')
 
 @section('content')
-<div class="bg-white rounded-xl shadow-sm border p-6 max-w-5xl">
-    <h3 class="text-lg font-semibold mb-1">Datos de la convocatoria</h3>
-    <p class="text-sm text-slate-500 mb-6">
-        Complete la información principal del proceso.
-    </p>
+<div class="space-y-6">
 
-    <form id="convocatoriaForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div>
-            <label class="block text-sm font-medium mb-1">Entidad convocante</label>
-            <select name="id_entidad" id="id_entidad" class="w-full border rounded-lg px-3 py-2">
-                <option value="">Cargando entidades...</option>
-            </select>
-        </div>
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-950 via-slate-900 to-orange-900 p-7 shadow-xl">
+        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-amber-400/20 blur-3xl"></div>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">Empresa / Proponente</label>
-            <select name="id_proponente" id="id_proponente" class="w-full border rounded-lg px-3 py-2">
-                <option value="">Cargando empresas...</option>
-            </select>
-        </div>
+        <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            <div>
+                <p class="text-amber-300 text-sm font-medium mb-2">
+                    Registro de proceso
+                </p>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">CITE</label>
-            <input name="cite" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="CITE CIDSAF 094/2023">
-        </div>
+                <h3 class="text-2xl font-bold text-white">
+                    Nueva convocatoria
+                </h3>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">Número de convocatoria</label>
-            <input name="numero_convocatoria" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="CH LP - 085/2023">
-        </div>
+                <p class="text-slate-300 mt-2 max-w-2xl">
+                    Complete la información principal del proceso de contratación, vinculando entidad y empresa proponente.
+                </p>
+            </div>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">CUCE</label>
-            <input name="cuce" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="23-1404-00-1345364-1-1">
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Estado</label>
-            <select name="estado" class="w-full border rounded-lg px-3 py-2">
-                <option value="Borrador">Borrador</option>
-                <option value="En revisión">En revisión</option>
-                <option value="Finalizada">Finalizada</option>
-            </select>
-        </div>
-
-        <div class="md:col-span-2">
-            <label class="block text-sm font-medium mb-1">Objeto de contratación</label>
-            <textarea name="objeto" class="w-full border rounded-lg px-3 py-2" rows="3" placeholder="Servicio de auditoría externa..."></textarea>
-        </div>
-
-        <div class="md:col-span-2">
-            <label class="block text-sm font-medium mb-1">Lugar de entrega</label>
-            <textarea name="lugar_entrega" class="w-full border rounded-lg px-3 py-2" rows="2" placeholder="Dirección donde se entrega la propuesta"></textarea>
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Fecha de presentación</label>
-            <input name="fecha_presentacion" type="date" class="w-full border rounded-lg px-3 py-2">
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Fecha de apertura</label>
-            <input name="fecha_apertura" type="date" class="w-full border rounded-lg px-3 py-2">
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Hora de apertura</label>
-            <input name="hora_apertura" type="time" class="w-full border rounded-lg px-3 py-2">
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Plazo de validez en días</label>
-            <input name="plazo_propuesta_dias" type="number" class="w-full border rounded-lg px-3 py-2" placeholder="60">
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Monto Bs.</label>
-            <input name="monto" type="number" step="0.01" class="w-full border rounded-lg px-3 py-2" placeholder="41500">
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium mb-1">Monto literal</label>
-            <input name="monto_literal" type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Cuarenta y un mil quinientos 00/100 bolivianos">
-        </div>
-
-        <div class="md:col-span-2 flex justify-end gap-3 pt-4">
-            <a href="/convocatorias" class="px-4 py-2 rounded-lg border">
-                Cancelar
+            <a href="/convocatorias" class="bg-white/10 text-white px-5 py-3 rounded-2xl hover:bg-white/20 border border-white/10 text-center">
+                Volver al listado
             </a>
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                Guardar convocatoria
-            </button>
         </div>
-    </form>
+    </div>
 
-    <div id="mensaje" class="hidden mt-5 rounded-lg p-4 text-sm border"></div>
+    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden max-w-6xl">
+        <div class="px-6 py-5 border-b border-slate-100">
+            <h4 class="font-bold text-slate-900">Datos de la convocatoria</h4>
+            <p class="text-sm text-slate-500 mt-1">
+                Complete los campos necesarios para generar documentos desde plantillas Word.
+            </p>
+        </div>
+
+        <form id="convocatoriaForm" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Entidad convocante</label>
+                <select name="id_entidad" id="id_entidad" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                    <option value="">Cargando entidades...</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Empresa / Proponente</label>
+                <select name="id_proponente" id="id_proponente" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                    <option value="">Cargando empresas...</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">CITE</label>
+                <input name="cite" type="text" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" placeholder="CITE CIDSAF 094/2023">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Número de convocatoria</label>
+                <input name="numero_convocatoria" type="text" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" placeholder="CH LP - 085/2023">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">CUCE</label>
+                <input name="cuce" type="text" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" placeholder="23-1404-00-1345364-1-1">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Estado</label>
+                <select name="estado" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                    <option value="Borrador">Borrador</option>
+                    <option value="En revisión">En revisión</option>
+                    <option value="Finalizada">Finalizada</option>
+                </select>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Objeto de contratación</label>
+                <textarea name="objeto" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" rows="3" placeholder="Servicio de auditoría externa..."></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Lugar de entrega</label>
+                <textarea name="lugar_entrega" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" rows="2" placeholder="Dirección donde se entrega la propuesta"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Fecha de presentación</label>
+                <input name="fecha_presentacion" type="date" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Fecha de apertura</label>
+                <input name="fecha_apertura" type="date" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Hora de apertura</label>
+                <input name="hora_apertura" type="time" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Plazo de validez en días</label>
+                <input name="plazo_propuesta_dias" type="number" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" placeholder="60">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Monto Bs.</label>
+                <input name="monto" type="number" step="0.01" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" placeholder="41500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Monto literal</label>
+                <input name="monto_literal" type="text" class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" placeholder="Cuarenta y un mil quinientos 00/100 bolivianos">
+            </div>
+
+            <div class="md:col-span-2">
+                <div id="mensaje" class="hidden rounded-2xl p-4 text-sm border"></div>
+            </div>
+
+            <div class="md:col-span-2 flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-slate-100">
+                <a href="/convocatorias" class="px-5 py-3 rounded-2xl border border-slate-200 hover:bg-slate-50 text-center">
+                    Cancelar
+                </a>
+
+                <button type="submit" id="btnGuardar" class="bg-amber-600 text-white px-5 py-3 rounded-2xl hover:bg-amber-500 shadow-lg shadow-amber-950/20 font-semibold transition">
+                    Guardar convocatoria
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
@@ -147,6 +179,7 @@ document.getElementById('convocatoriaForm').addEventListener('submit', async fun
 
     const form = e.target;
     const mensaje = document.getElementById('mensaje');
+    const btnGuardar = document.getElementById('btnGuardar');
 
     const data = {
         id_entidad: form.id_entidad.value,
@@ -164,6 +197,9 @@ document.getElementById('convocatoriaForm').addEventListener('submit', async fun
         monto_literal: form.monto_literal.value,
         estado: form.estado.value,
     };
+
+    btnGuardar.disabled = true;
+    btnGuardar.textContent = 'Guardando...';
 
     try {
         const response = await fetch('/api/convocatorias', {
@@ -183,22 +219,25 @@ document.getElementById('convocatoriaForm').addEventListener('submit', async fun
             let errores = '';
 
             if (result.errors) {
-                errores = Object.values(result.errors).flat().join(' ');
+                errores = Object.values(result.errors).flat().join('<br>');
             }
 
             throw new Error(result.message || errores || 'No se pudo guardar la convocatoria.');
         }
 
-        mensaje.className = 'mt-5 rounded-lg p-4 text-sm border bg-green-50 text-green-700 border-green-200';
-        mensaje.textContent = 'Convocatoria guardada correctamente. Redirigiendo...';
+        mensaje.className = 'rounded-2xl p-4 text-sm border bg-green-50 text-green-700 border-green-200';
+        mensaje.innerHTML = 'Convocatoria guardada correctamente. Redirigiendo...';
 
         setTimeout(() => {
             window.location.href = '/convocatorias';
-        }, 1000);
+        }, 900);
 
     } catch (error) {
-        mensaje.className = 'mt-5 rounded-lg p-4 text-sm border bg-red-50 text-red-700 border-red-200';
-        mensaje.textContent = error.message;
+        mensaje.className = 'rounded-2xl p-4 text-sm border bg-red-50 text-red-700 border-red-200';
+        mensaje.innerHTML = error.message;
+    } finally {
+        btnGuardar.disabled = false;
+        btnGuardar.textContent = 'Guardar convocatoria';
     }
 });
 </script>
