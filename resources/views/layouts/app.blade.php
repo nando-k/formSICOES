@@ -6,67 +6,112 @@
     <title>Sistema de Formularios</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-slate-100 text-slate-800">
+
+<body class="bg-slate-50 text-slate-800">
 
     <div class="min-h-screen flex">
 
         <!-- Sidebar -->
-        <aside class="w-64 bg-slate-900 text-white hidden md:flex md:flex-col">
-            <div class="px-6 py-5 border-b border-slate-700">
-                <h1 class="text-lg font-bold">Auditoría</h1>
-                <p class="text-xs text-slate-400">Gestión documental de propuestas</p>
+        <aside class="w-72 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white hidden md:flex md:flex-col shadow-2xl">
+            <div class="px-6 py-6 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center font-black text-slate-950 shadow-lg">
+                        A
+                    </div>
+
+                    <div>
+                        <h1 class="text-lg font-bold leading-tight">Auditoría</h1>
+                        <p class="text-xs text-slate-400">Gestión documental</p>
+                    </div>
+                </div>
             </div>
 
-            <nav class="flex-1 px-4 py-6 space-y-2">
-                <a href="/dashboard" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Dashboard
+            <nav class="flex-1 px-4 py-6 space-y-1">
+                <a href="/dashboard"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition {{ request()->is('dashboard') ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                    <span>Inicio</span>
                 </a>
 
-                <a href="/empresas" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Empresas
+                <a href="/empresas"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition {{ request()->is('empresas*') ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                    <span>Empresas</span>
                 </a>
 
-                <a href="/entidades" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Entidades
+                <a href="/entidades"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition {{ request()->is('entidades*') ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                    <span>Entidades</span>
                 </a>
 
-                <a href="/personal" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Personal
+                <a href="/personal"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition {{ request()->is('personal*') ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                    <span>Personal</span>
                 </a>
 
-                <a href="/convocatorias" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Convocatorias
+                <a href="/convocatorias"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition {{ request()->is('convocatorias*') ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                    <span>Convocatorias</span>
                 </a>
 
-                <a href="/propuestas" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Propuestas
+                <a href="/propuestas"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition {{ request()->is('propuestas*') ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                    <span>Propuestas</span>
                 </a>
 
-                <a href="/formularios" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Formularios
+                <a href="/formularios"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition {{ request()->is('formularios') ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                    <span>Formularios</span>
                 </a>
 
-                <a href="/documentos" class="block px-4 py-2 rounded-lg hover:bg-slate-800">
-                    Documentos
+                <a href="/documentos"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl transition {{ request()->is('documentos*') ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                    <span>Documentos</span>
                 </a>
 
-                <div class="pt-4 mt-4 border-t border-slate-700">
-                    <a href="/formularios/generar" class="block px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium">
+                <div class="pt-5 mt-5 border-t border-white/10">
+                    <a href="/formularios/generar"
+                       class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg shadow-emerald-950/40 hover:from-emerald-400 hover:to-teal-400 transition">
                         Generar documentos
                     </a>
                 </div>
             </nav>
+
+            <div class="px-6 py-5 border-t border-white/10">
+                <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <p class="text-xs text-slate-400 mb-1">Estado del sistema</p>
+                    <p class="text-sm font-semibold text-emerald-300">Operativo</p>
+                </div>
+            </div>
         </aside>
 
         <!-- Contenido -->
-        <main class="flex-1">
-            <header class="bg-white border-b border-slate-200 px-6 py-4">
-                <h2 class="text-xl font-semibold">@yield('title', 'Sistema')</h2>
+        <main class="flex-1 min-w-0">
+
+            <!-- Header -->
+            <header class="bg-white/80 backdrop-blur border-b border-slate-200 px-6 py-5 sticky top-0 z-10">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                            @yield('title', 'Sistema')
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">
+                            Sistema de generación documental para propuestas de auditoría
+                        </p>
+                    </div>
+
+                    <a href="/formularios/generar"
+                       class="hidden lg:inline-flex bg-slate-900 text-white px-4 py-2 rounded-xl hover:bg-slate-800 transition shadow-sm">
+                        Generar Word
+                    </a>
+                </div>
             </header>
 
-            <section class="p-6">
-                @yield('content')
+            <!-- Body -->
+            <section class="p-6 lg:p-8">
+                <div class="max-w-7xl mx-auto">
+                    @yield('content')
+                </div>
             </section>
+
         </main>
 
     </div>
