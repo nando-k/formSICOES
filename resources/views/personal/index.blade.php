@@ -7,7 +7,7 @@
     <div>
         <h3 class="text-lg font-semibold">Personal registrado</h3>
         <p class="text-sm text-slate-500">
-            Administre representantes legales, socios, auditores y especialistas.
+            Personas registradas para participar en las propuestas.
         </p>
     </div>
 
@@ -16,43 +16,109 @@
     </a>
 </div>
 
-<div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+<div id="loading" class="bg-white border rounded-xl p-6 text-slate-500">
+    Cargando personal...
+</div>
+
+<div id="error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl p-5">
+    No se pudo cargar el personal registrado.
+</div>
+
+<div id="tablaContainer" class="hidden bg-white rounded-xl shadow-sm border overflow-hidden">
     <table class="w-full text-sm">
         <thead class="bg-slate-50 text-slate-500">
             <tr>
                 <th class="text-left px-5 py-3">Nombre completo</th>
                 <th class="text-left px-5 py-3">CI</th>
-                <th class="text-left px-5 py-3">Cargo</th>
                 <th class="text-left px-5 py-3">Teléfono</th>
                 <th class="text-left px-5 py-3">Correo</th>
-                <th class="text-left px-5 py-3">Acciones</th>
+                <th class="text-left px-5 py-3">Profesión</th>
+                <th class="text-left px-5 py-3">Dirección</th>
             </tr>
         </thead>
-        <tbody>
-            <tr class="border-t">
-                <td class="px-5 py-3 font-medium">Sandra Irene Rodríguez Callisaya</td>
-                <td class="px-5 py-3">4791992 LP</td>
-                <td class="px-5 py-3">Representante Legal</td>
-                <td class="px-5 py-3">73008644</td>
-                <td class="px-5 py-3">-</td>
-                <td class="px-5 py-3 space-x-2">
-                    <a href="#" class="text-blue-600 hover:underline">Editar</a>
-                    <a href="#" class="text-slate-600 hover:underline">Ver</a>
-                </td>
-            </tr>
 
-            <tr class="border-t">
-                <td class="px-5 py-3 font-medium">Susy Janet Mollericona Choque</td>
-                <td class="px-5 py-3">9981466 LP</td>
-                <td class="px-5 py-3">Socia de la firma</td>
-                <td class="px-5 py-3">-</td>
-                <td class="px-5 py-3">-</td>
-                <td class="px-5 py-3 space-x-2">
-                    <a href="#" class="text-blue-600 hover:underline">Editar</a>
-                    <a href="#" class="text-slate-600 hover:underline">Ver</a>
-                </td>
-            </tr>
-        </tbody>
+        <tbody id="personalBody"></tbody>
     </table>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const loading = document.getElementById('loading');
+    const error = document.getElementById('error');
+    const tablaContainer = document.getElementById('tablaContainer');
+    const personalBody = document.getElementById('personalBody');
+
+    try {
+        const response = await fetch('/api/personas');
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data);
+            throw new Error(data.message || 'No se pudo cargar el personal.');
+        }
+
+        const personas = Array.isArray(data) ? data : data.data ?? [];
+
+        loading.classList.add('hidden');
+        tablaContainer.classList.remove('hidden');
+
+        if (personas.length === 0) {
+            personalBody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="px-5 py-6 text-center text-slate-500">
+                        No hay personal registrado todavía.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        personalBody.innerHTML = personas.map(persona => {
+            const nombreCompleto = [
+                persona.nombres,
+                persona.apellido_paterno,
+                persona.apellido_materno
+            ].filter(Boolean).join(' ');
+
+            const ciCompleto = [
+                persona.ci,
+                persona.expedido
+            ].filter(Boolean).join(' ');
+
+            return `
+                <tr class="border-t">
+                    <td class="px-5 py-3 font-medium text-slate-800">
+                        ${nombreCompleto || 'Sin nombre'}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        ${ciCompleto || '-'}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        ${persona.telefono ?? '-'}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        ${persona.correo ?? '-'}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        ${persona.profesion ?? '-'}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        ${persona.direccion ?? '-'}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+    } catch (e) {
+        console.error(e);
+        loading.classList.add('hidden');
+        error.classList.remove('hidden');
+    }
+});
+</script>
 @endsection
