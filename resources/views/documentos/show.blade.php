@@ -80,33 +80,47 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    const documentoId = @json($id);
+    const documentoId = Number(@json($id));
 
     const loading = document.getElementById('loading');
     const error = document.getElementById('error');
     const detalle = document.getElementById('detalle');
 
     try {
-        const response = await fetch(`/api/documentos-generados/${documentoId}`);
-        const documento = await response.json();
+        const response = await fetch('/api/documentos-generados');
+        const data = await response.json();
 
         if (!response.ok) {
-            console.error(documento);
-            throw new Error(documento.message || 'No se pudo cargar el documento.');
+            console.error(data);
+            throw new Error(data.message || 'No se pudo cargar el documento.');
         }
 
-        const id = documentoId;
+        const documentos = Array.isArray(data) ? data : data.data ?? [];
 
-        document.getElementById('nombreArchivo').textContent = documento.nombre_archivo ?? 'Documento generado';
-        document.getElementById('rutaArchivo').textContent = documento.ruta_archivo ?? 'Sin ruta registrada';
+        const documento = documentos.find(item => {
+            return Number(item.id_documento_generado) === documentoId;
+        });
+
+        if (!documento) {
+            throw new Error('No se encontró el documento generado.');
+        }
+
+        const id = documento.id_documento_generado;
+
+        document.getElementById('nombreArchivo').textContent =
+            documento.nombre_archivo ?? 'Documento generado';
+
+        document.getElementById('rutaArchivo').textContent =
+            documento.ruta_archivo ?? 'Sin ruta registrada';
 
         document.getElementById('modelo').textContent =
-            documento.documento_modelo?.nombre_modelo ??
-            documento.documentoModelo?.nombre_modelo ??
-            'Sin modelo';
+            documento.documento_modelo?.nombre_modelo ?? 'Sin modelo';
 
-        document.getElementById('fecha').textContent = documento.fecha_generacion ?? '-';
-        document.getElementById('generadoPor').textContent = documento.generado_por ?? '-';
+        document.getElementById('fecha').textContent =
+            documento.fecha_generacion ?? '-';
+
+        document.getElementById('generadoPor').textContent =
+            documento.generado_por ?? '-';
 
         document.getElementById('numeroConvocatoria').textContent =
             documento.convocatoria?.numero_convocatoria ?? '-';
@@ -117,7 +131,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('objeto').textContent =
             documento.convocatoria?.objeto ?? '-';
 
-        document.getElementById('btnDescargar').href = `/documentos/${id}/descargar`;
+        document.getElementById('btnDescargar').href =
+            `/documentos/${id}/descargar`;
 
         loading.classList.add('hidden');
         detalle.classList.remove('hidden');
@@ -126,6 +141,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error(e);
         loading.classList.add('hidden');
         error.classList.remove('hidden');
+        error.textContent = e.message;
     }
 });
 </script>
