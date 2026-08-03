@@ -78,6 +78,24 @@
                 </select>
             </div>
 
+            <div class="md:col-span-2">
+                <label class="block text-sm font-semibold text-slate-700 mb-1">
+                    Representante legal
+                </label>
+
+                <p class="text-xs text-slate-500 mb-2">
+                    Seleccione una persona registrada como representante legal de la empresa.
+                </p>
+
+                <select 
+                    name="representante_legal_id" 
+                    id="representante_legal_id"
+                    class="w-full border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition"
+                >
+                    <option value="">Cargando personas...</option>
+                </select>
+            </div>
+
             <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-1">NIT</label>
                 <input 
@@ -179,7 +197,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const camposMayusculas = document.querySelectorAll(
-        'input[type="text"], textarea, select'
+        'input[type="text"], textarea'
     );
 
     camposMayusculas.forEach(campo => {
@@ -194,7 +212,47 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    cargarRepresentantesLegales();
 });
+
+async function cargarRepresentantesLegales() {
+    const representanteSelect = document.getElementById('representante_legal_id');
+
+    try {
+        const response = await fetch('/api/personas');
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data);
+            throw new Error(data.message || 'No se pudieron cargar las personas.');
+        }
+
+        const personas = Array.isArray(data) ? data : data.data ?? [];
+
+        representanteSelect.innerHTML = '<option value="">Seleccione un representante legal</option>';
+
+        personas.forEach(persona => {
+            const nombreCompleto = [
+                persona.nombres,
+                persona.apellido_paterno,
+                persona.apellido_materno
+            ].filter(Boolean).join(' ');
+
+            const ci = persona.ci ? ` - CI: ${persona.ci}` : '';
+
+            representanteSelect.innerHTML += `
+                <option value="${persona.id_persona}">
+                    ${nombreCompleto || 'Persona sin nombre'}${ci}
+                </option>
+            `;
+        });
+
+    } catch (error) {
+        console.error(error);
+        representanteSelect.innerHTML = '<option value="">No se pudieron cargar las personas</option>';
+    }
+}
 
 document.getElementById('empresaForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -214,6 +272,7 @@ document.getElementById('empresaForm').addEventListener('submit', async function
         telefono: convertirMayusculas(form.telefono.value),
         correo: form.correo.value.trim().toLowerCase(),
         tipo_organizacion: convertirMayusculas(form.tipo_organizacion.value),
+        representante_legal_id: form.representante_legal_id.value || null,
     };
 
     btnGuardar.disabled = true;

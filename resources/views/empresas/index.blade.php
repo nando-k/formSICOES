@@ -56,6 +56,7 @@
                         <th class="text-left px-6 py-4">Empresa</th>
                         <th class="text-left px-6 py-4">NIT</th>
                         <th class="text-left px-6 py-4">Ciudad</th>
+                        <th class="text-left px-6 py-4">Representante legal</th>
                         <th class="text-left px-6 py-4">Teléfono</th>
                         <th class="text-left px-6 py-4">Correo</th>
                     </tr>
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (empresas.length === 0) {
             empresasBody.innerHTML = `
                 <tr>
-                    <td colspan="5" class="px-6 py-8 text-center text-slate-500">
+                    <td colspan="6" class="px-6 py-8 text-center text-slate-500">
                         No hay empresas registradas todavía.
                     </td>
                 </tr>
@@ -106,6 +107,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         empresasBody.innerHTML = empresas.map(empresa => {
             const nombre = empresa.razon_social ?? empresa.nombre_comercial ?? 'Empresa sin nombre';
             const inicial = nombre.trim().charAt(0).toUpperCase();
+
+            const representanteLegal = empresa.representante_legal
+                ? [
+                    empresa.representante_legal.nombres,
+                    empresa.representante_legal.apellido_paterno,
+                    empresa.representante_legal.apellido_materno
+                ].filter(Boolean).join(' ')
+                : 'Sin representante';
 
             return `
                 <tr class="border-t border-slate-100 hover:bg-slate-50 transition">
@@ -133,6 +142,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     <td class="px-6 py-4">
                         ${empresa.ciudad ?? '-'}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        ${representanteLegal}
                     </td>
 
                     <td class="px-6 py-4">

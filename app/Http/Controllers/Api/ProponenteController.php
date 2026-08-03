@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Proponente;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ProponenteController extends Controller
 {
@@ -31,6 +32,8 @@ class ProponenteController extends Controller
         ]);
 
         $validated = $this->normalizarDatos($validated);
+
+        $this->validarNitDuplicado($validated['nit'] ?? null);
 
         return Proponente::create($validated);
     }
@@ -59,6 +62,11 @@ class ProponenteController extends Controller
 
         $validated = $this->normalizarDatos($validated);
 
+        $this->validarNitDuplicado(
+            $validated['nit'] ?? null,
+            $proponente->id_proponente
+        );
+
         $proponente->update($validated);
 
         return $proponente;
@@ -69,6 +77,25 @@ class ProponenteController extends Controller
         $proponente->delete();
 
         return response()->noContent();
+    }
+
+    private function validarNitDuplicado(?string $nit, ?int $idProponenteActual = null): void
+    {
+        if (empty($nit)) {
+            return;
+        }
+
+        $query = Proponente::where('nit', $nit);
+
+        if ($idProponenteActual !== null) {
+            $query->where('id_proponente', '!=', $idProponenteActual);
+        }
+
+        if ($query->exists()) {
+            throw ValidationException::withMessages([
+                'nit' => ['El NIT ya está registrado en otra empresa.'],
+            ]);
+        }
     }
 
     private function normalizarDatos(array $datos): array
