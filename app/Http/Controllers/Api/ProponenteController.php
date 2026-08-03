@@ -30,6 +30,8 @@ class ProponenteController extends Controller
             'activo' => 'nullable|boolean',
         ]);
 
+        $validated = $this->normalizarDatos($validated);
+
         return Proponente::create($validated);
     }
 
@@ -55,13 +57,44 @@ class ProponenteController extends Controller
             'activo' => 'nullable|boolean',
         ]);
 
+        $validated = $this->normalizarDatos($validated);
+
         $proponente->update($validated);
+
         return $proponente;
     }
 
     public function destroy(Proponente $proponente)
     {
         $proponente->delete();
+
         return response()->noContent();
+    }
+
+    private function normalizarDatos(array $datos): array
+    {
+        $camposMayusculas = [
+            'razon_social',
+            'nombre_comercial',
+            'nit',
+            'matricula_comercio',
+            'direccion',
+            'ciudad',
+            'pais',
+            'telefono',
+            'tipo_organizacion',
+        ];
+
+        foreach ($camposMayusculas as $campo) {
+            if (array_key_exists($campo, $datos) && $datos[$campo] !== null) {
+                $datos[$campo] = mb_strtoupper(trim($datos[$campo]), 'UTF-8');
+            }
+        }
+
+        if (array_key_exists('correo', $datos) && $datos['correo'] !== null) {
+            $datos['correo'] = mb_strtolower(trim($datos['correo']), 'UTF-8');
+        }
+
+        return $datos;
     }
 }

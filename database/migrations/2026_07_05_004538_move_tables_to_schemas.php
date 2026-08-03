@@ -29,11 +29,15 @@ return new class extends Migration
         ];
 
         foreach ($moves as $table => $schema) {
-            $exists = DB::select("
+            $sourceExists = DB::select("
                 SELECT to_regclass('public.\"{$table}\"') AS table_name
             ")[0]->table_name;
 
-            if ($exists) {
+            $targetExists = DB::select("
+                SELECT to_regclass('{$schema}.\"{$table}\"') AS table_name
+            ")[0]->table_name;
+
+            if ($sourceExists && !$targetExists) {
                 DB::statement("ALTER TABLE public.\"{$table}\" SET SCHEMA {$schema}");
             }
         }

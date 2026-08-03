@@ -14,9 +14,16 @@ class Persona extends Model
     protected $primaryKey = 'id_persona';
 
     protected $fillable = [
-    'nombres', 'apellido_paterno', 'apellido_materno', 'ci', 'ci_expedido',
-    'direccion', 'telefono', 'correo', 'fecha_nacimiento',
-    // 'activo' eliminado
+        'nombres',
+        'apellido_paterno',
+        'apellido_materno',
+        'ci',
+        'ci_expedido',
+        'direccion',
+        'telefono',
+        'correo',
+        'profesion',
+        'fecha_nacimiento',
     ];
 
     public function creadoPor()

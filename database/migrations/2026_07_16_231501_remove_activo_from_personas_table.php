@@ -8,15 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('persona.personas', function (Blueprint $table) {
-            $table->dropColumn('activo');
-        });
+        if (Schema::hasColumn('persona.personas', 'activo')) {
+            Schema::table('persona.personas', function (Blueprint $table) {
+                $table->dropColumn('activo');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('persona.personas', function (Blueprint $table) {
-            $table->boolean('activo')->default(true);
-        });
+        if (!Schema::hasColumn('persona.personas', 'activo')) {
+            Schema::table('persona.personas', function (Blueprint $table) {
+                $table->boolean('activo')->default(true);
+            });
+        }
     }
 };
