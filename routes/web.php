@@ -39,6 +39,10 @@ Route::get('/empresas/create', function () {
     return view('empresas.create');
 });
 
+Route::get('/empresas/{id}', function ($id) {
+    return view('empresas.show', ['id' => $id]);
+});
+
 Route::get('/personal', function () {
     return view('personal.index');
 });
