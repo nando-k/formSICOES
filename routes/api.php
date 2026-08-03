@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\DocumentoGeneradoController;
 use App\Http\Controllers\Api\PlantillaCampoController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('personas-plantilla-csv', [PersonaController::class, 'plantillaCsv']);
+Route::post('personas-importar-csv', [PersonaController::class, 'importarCsv']);
 Route::apiResource('personas', PersonaController::class);
 Route::apiResource('entidades', EntidadController::class);
 Route::apiResource('cargos', CargoController::class);
