@@ -25,6 +25,8 @@ class EntidadController extends Controller
             'cargo_contacto' => 'nullable|string|max:150',
         ]);
 
+        $validated = $this->normalizarDatos($validated);
+
         return Entidad::create($validated);
     }
 
@@ -45,13 +47,41 @@ class EntidadController extends Controller
             'cargo_contacto' => 'nullable|string|max:150',
         ]);
 
+        $validated = $this->normalizarDatos($validated);
+
         $entidad->update($validated);
+
         return $entidad;
     }
 
     public function destroy(Entidad $entidad)
     {
         $entidad->delete();
+
         return response()->noContent();
+    }
+
+    private function normalizarDatos(array $datos): array
+    {
+        $camposMayusculas = [
+            'nombre_entidad',
+            'direccion',
+            'ciudad',
+            'telefono',
+            'contacto',
+            'cargo_contacto',
+        ];
+
+        foreach ($camposMayusculas as $campo) {
+            if (array_key_exists($campo, $datos) && $datos[$campo] !== null) {
+                $datos[$campo] = mb_strtoupper(trim($datos[$campo]), 'UTF-8');
+            }
+        }
+
+        if (array_key_exists('correo', $datos) && $datos['correo'] !== null) {
+            $datos['correo'] = mb_strtolower(trim($datos['correo']), 'UTF-8');
+        }
+
+        return $datos;
     }
 }
