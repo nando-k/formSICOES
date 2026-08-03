@@ -33,14 +33,19 @@
         <div class="px-6 py-5 border-b border-slate-100">
             <h4 class="font-bold text-slate-900">Datos de la empresa</h4>
             <p class="text-sm text-slate-500 mt-1">
-                Complete los campos principales del proponente.
+                Complete los datos principales del proponente. La razón social debe registrarse tal como aparece en el certificado NRC.
             </p>
         </div>
 
         <form id="empresaForm" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
 
             <div class="md:col-span-2">
-                <label class="block text-sm font-semibold text-slate-700 mb-1">Razón social</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">
+                    Razón social según certificado NRC
+                </label>
+                <p class="text-xs text-slate-500 mb-2">
+                    Escriba el nombre exactamente como figura en el certificado NRC.
+                </p>
                 <input 
                     name="razon_social" 
                     type="text" 
@@ -84,7 +89,9 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-1">Matrícula de comercio</label>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">
+                    NRC / Matrícula de comercio
+                </label>
                 <input 
                     name="matricula_comercio" 
                     type="text" 
@@ -166,6 +173,29 @@
 </div>
 
 <script>
+    function convertirMayusculas(valor) {
+    return valor ? valor.trim().toUpperCase() : valor;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const camposMayusculas = document.querySelectorAll(
+        'input[type="text"], textarea, select'
+    );
+
+    camposMayusculas.forEach(campo => {
+        campo.classList.add('uppercase');
+
+        campo.addEventListener('input', () => {
+            const posicion = campo.selectionStart;
+            campo.value = campo.value.toUpperCase();
+
+            if (campo.setSelectionRange && posicion !== null) {
+                campo.setSelectionRange(posicion, posicion);
+            }
+        });
+    });
+});
+
 document.getElementById('empresaForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -174,16 +204,16 @@ document.getElementById('empresaForm').addEventListener('submit', async function
     const btnGuardar = document.getElementById('btnGuardar');
 
     const data = {
-        razon_social: form.razon_social.value,
-        nombre_comercial: form.nombre_comercial.value,
-        nit: form.nit.value,
-        matricula_comercio: form.matricula_comercio.value,
-        direccion: form.direccion.value,
-        ciudad: form.ciudad.value,
-        pais: form.pais.value,
-        telefono: form.telefono.value,
-        correo: form.correo.value,
-        tipo_organizacion: form.tipo_organizacion.value,
+        razon_social: convertirMayusculas(form.razon_social.value),
+        nombre_comercial: convertirMayusculas(form.nombre_comercial.value),
+        nit: convertirMayusculas(form.nit.value),
+        matricula_comercio: convertirMayusculas(form.matricula_comercio.value),
+        direccion: convertirMayusculas(form.direccion.value),
+        ciudad: convertirMayusculas(form.ciudad.value),
+        pais: convertirMayusculas(form.pais.value),
+        telefono: convertirMayusculas(form.telefono.value),
+        correo: form.correo.value.trim().toLowerCase(),
+        tipo_organizacion: convertirMayusculas(form.tipo_organizacion.value),
     };
 
     btnGuardar.disabled = true;

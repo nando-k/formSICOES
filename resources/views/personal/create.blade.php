@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo personal')
+@section('title', 'Nueva persona')
 
 @section('content')
 <div class="space-y-6">
@@ -11,15 +11,15 @@
         <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
             <div>
                 <p class="text-emerald-300 text-sm font-medium mb-2">
-                    Registro de equipo técnico
+                    Registro de persona
                 </p>
 
                 <h3 class="text-2xl font-bold text-white">
-                    Nuevo personal
+                    Nueva persona
                 </h3>
 
                 <p class="text-slate-300 mt-2 max-w-2xl">
-                    Registre los datos de las personas que participarán en las propuestas y documentos generados.
+                    Registre personas en la población general. Luego podrán asignarse como personal de una empresa.
                 </p>
             </div>
 
@@ -31,7 +31,7 @@
 
     <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden max-w-6xl">
         <div class="px-6 py-5 border-b border-slate-100">
-            <h4 class="font-bold text-slate-900">Datos del personal</h4>
+            <h4 class="font-bold text-slate-900">Datos de la persona</h4>
             <p class="text-sm text-slate-500 mt-1">
                 Complete la información principal de la persona.
             </p>
@@ -152,7 +152,7 @@
                     id="btnGuardar" 
                     class="bg-emerald-600 text-white px-5 py-3 rounded-2xl hover:bg-emerald-500 shadow-lg shadow-emerald-950/20 font-semibold transition"
                 >
-                    Guardar personal
+                    Guardar persona
                 </button>
             </div>
         </form>
@@ -197,15 +197,15 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const data = {
-            nombres: form.nombres.value,
-            apellido_paterno: form.apellido_paterno.value,
-            apellido_materno: form.apellido_materno.value,
-            ci: form.ci.value,
-            expedido: form.expedido.value,
-            telefono: form.telefono.value,
-            correo: form.correo.value,
-            profesion: form.profesion.value,
-            direccion: form.direccion.value,
+            nombres: convertirMayusculas(form.nombres.value),
+            apellido_paterno: convertirMayusculas(form.apellido_paterno.value),
+            apellido_materno: convertirMayusculas(form.apellido_materno.value),
+            ci: convertirMayusculas(form.ci.value),
+            expedido: convertirMayusculas(form.expedido.value),
+            telefono: convertirMayusculas(form.telefono.value),
+            correo: form.correo.value.trim().toLowerCase(),
+            profesion: convertirMayusculas(form.profesion.value),
+            direccion: convertirMayusculas(form.direccion.value),
         };
 
         btnGuardar.disabled = true;
@@ -249,5 +249,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+    function convertirMayusculas(valor) {
+        return valor ? valor.trim().toUpperCase() : valor;
+    }
+
+    const camposMayusculas = document.querySelectorAll(
+        'input[type="text"], textarea, select'
+    );
+
+    camposMayusculas.forEach(campo => {
+        campo.classList.add('uppercase');
+
+        campo.addEventListener('input', () => {
+            const posicion = campo.selectionStart;
+            campo.value = campo.value.toUpperCase();
+
+            if (campo.setSelectionRange && posicion !== null) {
+                campo.setSelectionRange(posicion, posicion);
+            }
+        });
+    });
 </script>
 @endsection

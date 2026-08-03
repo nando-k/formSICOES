@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Personal')
+@section('title', 'Personal de la empresa')
 
 @section('content')
 <div class="space-y-6">
@@ -11,20 +11,20 @@
         <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
             <div>
                 <p class="text-emerald-300 text-sm font-medium mb-2">
-                    Equipo técnico registrado
+                    Personal de la empresa
                 </p>
 
                 <h3 class="text-2xl font-bold text-white">
-                    Personal
+                    Personal de la empresa
                 </h3>
 
                 <p class="text-slate-300 mt-2 max-w-2xl">
-                    Administre las personas que participarán en las propuestas y formularios del sistema.
+                    Administre la población general de personas que luego podrá asignarse como personal de una empresa.
                 </p>
             </div>
 
             <a href="/personal/create" class="bg-emerald-500 text-white px-5 py-3 rounded-2xl hover:bg-emerald-400 shadow-lg shadow-emerald-950/30 font-semibold text-center">
-                Nuevo personal
+                Nueva persona
             </a>
         </div>
     </div>
@@ -40,8 +40,8 @@
     <div id="tablaContainer" class="hidden bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
             <div>
-                <h4 class="font-bold text-slate-900">Listado de personal</h4>
-                <p class="text-sm text-slate-500">Personas cargadas desde la API.</p>
+                <h4 class="font-bold text-slate-900">Población general de personas</h4>
+                <p class="text-sm text-slate-500">Personas registradas disponibles para asignarse a empresas.</p>
             </div>
 
             <span id="totalPersonal" class="text-sm bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full font-medium">
