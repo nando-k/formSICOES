@@ -19,6 +19,10 @@ Route::get('/convocatorias/create', function () {
     return view('convocatorias.create');
 });
 
+Route::get('/convocatorias/{id}', function ($id) {
+    return view('convocatorias.show', ['id' => $id]);
+});
+
 Route::get('/propuestas', function () {
     return view('propuestas.index');
 });

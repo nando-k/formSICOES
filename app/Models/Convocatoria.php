@@ -9,13 +9,24 @@ class Convocatoria extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'contratacion.convocatorias';   // ← AGREGAR
+    protected $table = 'contratacion.convocatorias';
     protected $primaryKey = 'id_convocatoria';
 
     protected $fillable = [
-        'id_entidad', 'id_proponente', 'cite', 'numero_convocatoria', 'cuce',
-        'objeto', 'lugar_entrega', 'fecha_presentacion', 'hora_apertura',
-        'fecha_apertura', 'monto', 'monto_literal', 'plazo_propuesta_dias', 'estado',
+        'id_entidad',
+        'id_proponente',
+        'cite',
+        'numero_convocatoria',
+        'cuce',
+        'objeto',
+        'lugar_entrega',
+        'fecha_presentacion',
+        'hora_apertura',
+        'fecha_apertura',
+        'monto',
+        'monto_literal',
+        'plazo_propuesta_dias',
+        'estado',
     ];
 
     public function entidad()
@@ -31,5 +42,21 @@ class Convocatoria extends Model
     public function documentosGenerados()
     {
         return $this->hasMany(DocumentoGenerado::class, 'id_convocatoria', 'id_convocatoria');
+    }
+
+    public function personalConvocatoria()
+    {
+        return $this->hasMany(ConvocatoriaPersonal::class, 'id_convocatoria', 'id_convocatoria');
+    }
+
+    public function personas()
+    {
+        return $this->belongsToMany(
+            Persona::class,
+            'contratacion.convocatoria_personal',
+            'id_convocatoria',
+            'id_persona'
+        )->withPivot('id_cargo', 'es_firmante', 'orden_firma', 'activo')
+         ->withTimestamps();
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ConvocatoriaPersonalController;
 use App\Http\Controllers\Api\PersonaController;
 use App\Http\Controllers\Api\EntidadController;
 use App\Http\Controllers\Api\CargoController;
@@ -16,6 +17,7 @@ Route::apiResource('entidades', EntidadController::class);
 Route::apiResource('cargos', CargoController::class);
 Route::apiResource('proponentes', ProponenteController::class);
 Route::apiResource('convocatorias', ConvocatoriaController::class);
+Route::apiResource('convocatoria-personal', ConvocatoriaPersonalController::class);
 Route::apiResource('proponente-personal', ProponentePersonalController::class);
 Route::apiResource('documentos-modelo', DocumentoModeloController::class);
 Route::apiResource('documentos-generados', DocumentoGeneradoController::class);

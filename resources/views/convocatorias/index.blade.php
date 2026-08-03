@@ -170,9 +170,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </td>
 
                     <td class="px-6 py-4">
-                        <a href="/formularios/generar?convocatoria=${item.id_convocatoria}" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm">
-                            Generar
-                        </a>
+                        <div class="flex gap-2">
+                            <a href="/convocatorias/${item.id_convocatoria}" class="inline-flex px-3 py-2 rounded-xl bg-amber-600 text-white hover:bg-amber-500 text-sm">
+                                Ver personal
+                            </a>
+
+                            <a href="/formularios/generar?convocatoria=${item.id_convocatoria}" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm">
+                                Generar
+                            </a>
+                        </div>
                     </td>
                 </tr>
             `;

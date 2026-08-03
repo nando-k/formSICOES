@@ -32,12 +32,20 @@ class ConvocatoriaController extends Controller
             'estado' => 'nullable|string|max:50',
         ]);
 
+        $validated = $this->normalizarDatos($validated);
+
         return Convocatoria::create($validated);
     }
 
     public function show(Convocatoria $convocatoria)
     {
-        return $convocatoria->load('entidad', 'proponente', 'documentosGenerados');
+        return $convocatoria->load(
+            'entidad',
+            'proponente',
+            'proponente.personal',
+            'personas',
+            'documentosGenerados'
+        );
     }
 
     public function update(Request $request, Convocatoria $convocatoria)
@@ -59,13 +67,38 @@ class ConvocatoriaController extends Controller
             'estado' => 'nullable|string|max:50',
         ]);
 
+        $validated = $this->normalizarDatos($validated);
+
         $convocatoria->update($validated);
+
         return $convocatoria;
     }
 
     public function destroy(Convocatoria $convocatoria)
     {
         $convocatoria->delete();
+
         return response()->noContent();
+    }
+
+    private function normalizarDatos(array $datos): array
+    {
+        $camposMayusculas = [
+            'cite',
+            'numero_convocatoria',
+            'cuce',
+            'objeto',
+            'lugar_entrega',
+            'monto_literal',
+            'estado',
+        ];
+
+        foreach ($camposMayusculas as $campo) {
+            if (array_key_exists($campo, $datos) && $datos[$campo] !== null) {
+                $datos[$campo] = mb_strtoupper(trim($datos[$campo]), 'UTF-8');
+            }
+        }
+
+        return $datos;
     }
 }
