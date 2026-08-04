@@ -58,6 +58,7 @@
                         <th class="text-left px-6 py-4">Teléfono</th>
                         <th class="text-left px-6 py-4">Correo</th>
                         <th class="text-left px-6 py-4">Contacto</th>
+                        <th class="text-left px-6 py-4">Acción</th>
                     </tr>
                 </thead>
 
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (entidades.length === 0) {
             entidadesBody.innerHTML = `
                 <tr>
-                    <td colspan="5" class="px-6 py-8 text-center text-slate-500">
+                    <td colspan="6" class="px-6 py-8 text-center text-slate-500">
                         No hay entidades registradas todavía.
                     </td>
                 </tr>
@@ -141,6 +142,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     <td class="px-6 py-4">
                         ${entidad.contacto ?? '-'}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <a href="/convocatorias/create?entidad=${entidad.id_entidad}" class="inline-flex px-3 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-500 text-sm font-semibold">
+                            Crear convocatoria
+                        </a>
                     </td>
                 </tr>
             `;

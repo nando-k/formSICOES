@@ -195,6 +195,8 @@ function convertirMayusculas(valor) {
 document.addEventListener('DOMContentLoaded', async () => {
     const entidadSelect = document.getElementById('id_entidad');
     const proponenteSelect = document.getElementById('id_proponente');
+    const params = new URLSearchParams(window.location.search);
+    const entidadPreseleccionada = params.get('entidad');
     const crearEntidadCheck = document.getElementById('crearEntidadCheck');
     const bloqueEntidadExistente = document.getElementById('bloqueEntidadExistente');
     const bloqueNuevaEntidad = document.getElementById('bloqueNuevaEntidad');
@@ -261,6 +263,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await cargarEntidades();
     await cargarProponentes();
+
+    if (entidadPreseleccionada) {
+        entidadSelect.value = entidadPreseleccionada;
+    }
 });
 
 document.getElementById('convocatoriaForm').addEventListener('submit', async function(e) {

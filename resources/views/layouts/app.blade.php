@@ -86,25 +86,6 @@
         <!-- Contenido -->
         <main class="flex-1 min-w-0">
 
-            <!-- Header -->
-            <header class="bg-white/80 backdrop-blur border-b border-slate-200 px-6 py-5 sticky top-0 z-10">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-bold tracking-tight text-slate-900">
-                            @yield('title', 'Sistema')
-                        </h2>
-                        <p class="text-sm text-slate-500 mt-1">
-                            Sistema de generación documental para propuestas de auditoría
-                        </p>
-                    </div>
-
-                    <a href="/formularios/generar"
-                       class="hidden lg:inline-flex bg-slate-900 text-white px-4 py-2 rounded-xl hover:bg-slate-800 transition shadow-sm">
-                        Generar Word
-                    </a>
-                </div>
-            </header>
-
             <!-- Body -->
             <section class="p-6 lg:p-8">
                 <div class="max-w-7xl mx-auto">
