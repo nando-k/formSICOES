@@ -8,13 +8,16 @@ use App\Models\Convocatoria;
 use App\Models\ConvocatoriaPersonal;
 use App\Models\Persona;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class ConvocatoriaPersonalController extends Controller
 {
     public function index()
     {
-        return ConvocatoriaPersonal::with('convocatoria', 'persona', 'cargo')->get();
+        return ConvocatoriaPersonal::with('convocatoria', 'persona', 'cargo')
+            ->orderBy('id_convocatoria_personal')
+            ->get();
     }
 
     public function store(Request $request)
@@ -43,13 +46,17 @@ class ConvocatoriaPersonalController extends Controller
         return ConvocatoriaPersonal::create($validated)->load('persona', 'cargo');
     }
 
-    public function show(ConvocatoriaPersonal $convocatoriaPersonal)
+    public function show($id)
     {
+        $convocatoriaPersonal = ConvocatoriaPersonal::where('id_convocatoria_personal', $id)->firstOrFail();
+
         return $convocatoriaPersonal->load('convocatoria', 'persona', 'cargo');
     }
 
-    public function update(Request $request, ConvocatoriaPersonal $convocatoriaPersonal)
+    public function update(Request $request, $id)
     {
+        $convocatoriaPersonal = ConvocatoriaPersonal::where('id_convocatoria_personal', $id)->firstOrFail();
+
         $validated = $request->validate([
             'id_convocatoria' => 'sometimes|integer',
             'id_persona' => 'sometimes|integer',
@@ -71,11 +78,66 @@ class ConvocatoriaPersonalController extends Controller
         return $convocatoriaPersonal->load('persona', 'cargo');
     }
 
-    public function destroy(ConvocatoriaPersonal $convocatoriaPersonal)
+    public function destroy($id)
     {
+        $convocatoriaPersonal = ConvocatoriaPersonal::where('id_convocatoria_personal', $id)->firstOrFail();
+
+        if ($convocatoriaPersonal->cv_pdf && Storage::disk('local')->exists($convocatoriaPersonal->cv_pdf)) {
+            Storage::disk('local')->delete($convocatoriaPersonal->cv_pdf);
+        }
+
         $convocatoriaPersonal->delete();
 
         return response()->noContent();
+    }
+
+    public function subirCv(Request $request, $id)
+    {
+        $convocatoriaPersonal = ConvocatoriaPersonal::where('id_convocatoria_personal', $id)->firstOrFail();
+
+        $request->validate([
+            'cv_pdf' => 'required|file|mimes:pdf|max:5120',
+        ]);
+
+        $archivo = $request->file('cv_pdf');
+
+        if ($convocatoriaPersonal->cv_pdf && Storage::disk('local')->exists($convocatoriaPersonal->cv_pdf)) {
+            Storage::disk('local')->delete($convocatoriaPersonal->cv_pdf);
+        }
+
+        $nombreArchivo = 'cv_' .
+            $convocatoriaPersonal->id_convocatoria .
+            '_' .
+            $convocatoriaPersonal->id_persona .
+            '_' .
+            time() .
+            '.pdf';
+
+        $ruta = $archivo->storeAs('cvs', $nombreArchivo, 'local');
+
+        $convocatoriaPersonal->update([
+            'cv_pdf' => $ruta,
+            'cv_nombre_original' => $archivo->getClientOriginalName(),
+            'cv_fecha_subida' => now(),
+        ]);
+
+        return $convocatoriaPersonal->load('persona', 'cargo');
+    }
+
+    public function descargarCv($id)
+    {
+        $convocatoriaPersonal = ConvocatoriaPersonal::where('id_convocatoria_personal', $id)->firstOrFail();
+
+        if (!$convocatoriaPersonal->cv_pdf || !Storage::disk('local')->exists($convocatoriaPersonal->cv_pdf)) {
+            abort(404, 'El CV no existe en el servidor.');
+        }
+
+        $rutaArchivo = Storage::disk('local')->path($convocatoriaPersonal->cv_pdf);
+
+        return response()->file($rutaArchivo, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . ($convocatoriaPersonal->cv_nombre_original ?? 'curriculum.pdf') . '"',
+        ]);
     }
 
     private function validarRelaciones(array $datos): void

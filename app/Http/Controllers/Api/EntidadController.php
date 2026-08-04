@@ -10,7 +10,7 @@ class EntidadController extends Controller
 {
     public function index()
     {
-        return Entidad::all();
+        return Entidad::orderBy('id_entidad')->get();
     }
 
     public function store(Request $request)
@@ -30,15 +30,19 @@ class EntidadController extends Controller
         return Entidad::create($validated);
     }
 
-    public function show(Entidad $entidad)
+    public function show($id)
     {
+        $entidad = Entidad::where('id_entidad', $id)->firstOrFail();
+
         return $entidad->load('convocatorias');
     }
 
-    public function update(Request $request, Entidad $entidad)
+    public function update(Request $request, $id)
     {
+        $entidad = Entidad::where('id_entidad', $id)->firstOrFail();
+
         $validated = $request->validate([
-            'nombre_entidad' => 'sometimes|string|max:255',
+            'nombre_entidad' => 'required|string|max:255',
             'direccion' => 'nullable|string',
             'ciudad' => 'nullable|string|max:100',
             'telefono' => 'nullable|string|max:100',
@@ -54,8 +58,10 @@ class EntidadController extends Controller
         return $entidad;
     }
 
-    public function destroy(Entidad $entidad)
+    public function destroy($id)
     {
+        $entidad = Entidad::where('id_entidad', $id)->firstOrFail();
+
         $entidad->delete();
 
         return response()->noContent();

@@ -158,9 +158,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </td>
 
                     <td class="px-6 py-4">
-                        <a href="/empresas/${empresa.id_proponente}" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm">
-                            Ver personal
-                        </a>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="/empresas/${empresa.id_proponente}/edit" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm font-semibold">
+                                Editar
+                            </a>
+
+                            <a href="/empresas/${empresa.id_proponente}" class="inline-flex px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 text-sm font-semibold">
+                                Ver personal
+                            </a>
+                        </div>
                     </td>
                 </tr>
             `;

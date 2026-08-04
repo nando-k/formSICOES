@@ -79,6 +79,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const convocatoriasBody = document.getElementById('convocatoriasBody');
     const totalConvocatorias = document.getElementById('totalConvocatorias');
 
+    function escapar(texto) {
+        if (texto === null || texto === undefined) {
+            return '';
+        }
+
+        return String(texto)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#039;');
+    }
+
     function obtenerEstadoClase(estado) {
         const valor = (estado ?? '').toLowerCase();
 
@@ -86,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return 'bg-yellow-50 text-yellow-700 border-yellow-200';
         }
 
-        if (valor === 'activa' || valor === 'en revisión') {
+        if (valor === 'activa' || valor === 'en revisión' || valor === 'en revision') {
             return 'bg-green-50 text-green-700 border-green-200';
         }
 
@@ -97,8 +110,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         return 'bg-slate-50 text-slate-700 border-slate-200';
     }
 
+    function formatoFecha(fecha) {
+        if (!fecha) {
+            return '-';
+        }
+
+        return String(fecha).substring(0, 10);
+    }
+
     try {
-        const response = await fetch('/api/convocatorias');
+        const response = await fetch('/api/convocatorias', {
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+
         const data = await response.json();
 
         if (!response.ok) {
@@ -134,48 +160,52 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <tr class="border-t border-slate-100 hover:bg-slate-50 transition">
                     <td class="px-6 py-4">
                         <p class="font-semibold text-slate-900">
-                            ${item.numero_convocatoria ?? 'Sin número'}
+                            ${escapar(item.numero_convocatoria ?? 'Sin número')}
                         </p>
                         <p class="text-xs text-slate-500">
-                            ${item.cite ?? 'Sin CITE'}
+                            ${escapar(item.cite ?? 'Sin CITE')}
                         </p>
                     </td>
 
                     <td class="px-6 py-4">
-                        ${entidad}
+                        ${escapar(entidad)}
                     </td>
 
                     <td class="px-6 py-4">
-                        ${proponente}
+                        ${escapar(proponente)}
                     </td>
 
                     <td class="px-6 py-4 max-w-xs">
                         <span class="line-clamp-2">
-                            ${item.objeto ?? 'Sin objeto'}
+                            ${escapar(item.objeto ?? 'Sin objeto')}
                         </span>
                     </td>
 
                     <td class="px-6 py-4">
-                        ${item.cuce ?? '-'}
+                        ${escapar(item.cuce ?? '-')}
                     </td>
 
                     <td class="px-6 py-4">
-                        ${item.fecha_apertura ?? '-'}
+                        ${escapar(formatoFecha(item.fecha_apertura))}
                     </td>
 
                     <td class="px-6 py-4">
                         <span class="px-3 py-1 rounded-full text-xs font-medium border ${estadoClase}">
-                            ${estado}
+                            ${escapar(estado)}
                         </span>
                     </td>
 
                     <td class="px-6 py-4">
-                        <div class="flex gap-2">
-                            <a href="/convocatorias/${item.id_convocatoria}" class="inline-flex px-3 py-2 rounded-xl bg-amber-600 text-white hover:bg-amber-500 text-sm">
+                        <div class="flex flex-wrap gap-2">
+                            <a href="/convocatorias/${item.id_convocatoria}/edit" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm font-semibold">
+                                Editar
+                            </a>
+
+                            <a href="/convocatorias/${item.id_convocatoria}" class="inline-flex px-3 py-2 rounded-xl bg-amber-600 text-white hover:bg-amber-500 text-sm font-semibold">
                                 Ver personal
                             </a>
 
-                            <a href="/formularios/generar?convocatoria=${item.id_convocatoria}" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm">
+                            <a href="/formularios/generar?convocatoria=${item.id_convocatoria}" class="inline-flex px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 text-sm font-semibold">
                                 Generar
                             </a>
                         </div>

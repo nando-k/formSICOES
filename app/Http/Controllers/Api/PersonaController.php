@@ -11,7 +11,7 @@ class PersonaController extends Controller
 {
     public function index()
     {
-        return Persona::all();
+        return Persona::orderBy('id_persona')->get();
     }
 
     public function store(Request $request)
@@ -65,11 +65,9 @@ class PersonaController extends Controller
             ]);
         }
 
-        // Quitar BOM invisible de Excel
         $primeraLinea = preg_replace('/^\xEF\xBB\xBF/', '', $primeraLinea);
         $primeraLinea = str_replace("\u{FEFF}", '', $primeraLinea);
 
-        // Detectar separador automáticamente: ; , o tabulación
         $separadores = [
             ';' => substr_count($primeraLinea, ';'),
             ',' => substr_count($primeraLinea, ','),
@@ -184,20 +182,24 @@ class PersonaController extends Controller
         ]);
     }
 
-    public function show(Persona $persona)
+    public function show($id)
     {
-        return $persona->load('proponentesRepresentados');
+        $persona = Persona::where('id_persona', $id)->firstOrFail();
+
+        return $persona->load('proponentesRepresentados', 'proponentes');
     }
 
-    public function update(Request $request, Persona $persona)
+    public function update(Request $request, $id)
     {
+        $persona = Persona::where('id_persona', $id)->firstOrFail();
+
         $this->mapearExpedido($request);
 
         $validated = $request->validate([
-            'nombres' => 'sometimes|string|max:150',
+            'nombres' => 'required|string|max:150',
             'apellido_paterno' => 'nullable|string|max:100',
             'apellido_materno' => 'nullable|string|max:100',
-            'ci' => 'sometimes|string|max:30',
+            'ci' => 'required|string|max:30',
             'ci_expedido' => 'nullable|string|max:10',
             'direccion' => 'nullable|string',
             'telefono' => 'nullable|string|max:100',
@@ -208,17 +210,20 @@ class PersonaController extends Controller
 
         $validated = $this->normalizarDatos($validated);
 
-        if (!empty($validated['ci'])) {
-            $this->validarCiDuplicado($validated['ci'], $persona->id_persona);
-        }
+        $this->validarCiDuplicado(
+            $validated['ci'] ?? null,
+            $persona->id_persona
+        );
 
         $persona->update($validated);
 
         return $persona;
     }
 
-    public function destroy(Persona $persona)
+    public function destroy($id)
     {
+        $persona = Persona::where('id_persona', $id)->firstOrFail();
+
         $persona->delete();
 
         return response()->noContent();

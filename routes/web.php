@@ -12,24 +12,44 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
-Route::get('/convocatorias', function () {
-    return view('convocatorias.index');
+Route::get('/empresas', function () {
+    return view('empresas.index');
 });
 
-Route::get('/convocatorias/create', function () {
-    return view('convocatorias.create');
+Route::get('/empresas/create', function () {
+    return view('empresas.create');
 });
 
-Route::get('/convocatorias/{id}', function ($id) {
-    return view('convocatorias.show', ['id' => $id]);
+Route::get('/empresas/{id}/edit', function ($id) {
+    return view('empresas.edit', ['id' => $id]);
 });
 
-Route::get('/propuestas', function () {
-    return view('propuestas.index');
+Route::get('/empresas/{id}', function ($id) {
+    return view('empresas.show', ['id' => $id]);
 });
 
-Route::get('/propuestas/create', function () {
-    return view('propuestas.create');
+Route::get('/entidades', function () {
+    return view('entidades.index');
+});
+
+Route::get('/entidades/create', function () {
+    return view('entidades.create');
+});
+
+Route::get('/entidades/{id}/edit', function ($id) {
+    return view('entidades.edit', ['id' => $id]);
+});
+
+Route::get('/personal', function () {
+    return view('personal.index');
+});
+
+Route::get('/personal/create', function () {
+    return view('personal.create');
+});
+
+Route::get('/personal/{id}/edit', function ($id) {
+    return view('personal.edit', ['id' => $id]);
 });
 
 Route::get('/personal/plantilla-csv', function () {
@@ -48,7 +68,7 @@ Route::get('/personal/exportar-csv', function () {
     $personas = Persona::orderBy('id_persona')->get();
 
     $contenido = "\xEF\xBB\xBF";
-    $contenido .= "nombres;apellido_paterno;apellido_materno;ci;ci_expedido;direccion;telefono;correo\n";
+    $contenido .= "nombres;apellido_paterno;apellido_materno;ci;ci_expedido;direccion;telefono;correo;profesion\n";
 
     foreach ($personas as $persona) {
         $fila = [
@@ -80,28 +100,32 @@ Route::get('/personal/exportar-csv', function () {
     ]);
 });
 
+Route::get('/convocatorias', function () {
+    return view('convocatorias.index');
+});
+
+Route::get('/convocatorias/create', function () {
+    return view('convocatorias.create');
+});
+
+Route::get('/convocatorias/{id}/edit', function ($id) {
+    return view('convocatorias.edit', ['id' => $id]);
+});
+
+Route::get('/convocatorias/{id}', function ($id) {
+    return view('convocatorias.show', ['id' => $id]);
+});
+
+Route::get('/propuestas', function () {
+    return view('propuestas.index');
+});
+
+Route::get('/propuestas/create', function () {
+    return view('propuestas.create');
+});
+
 Route::get('/propuestas/generar', function () {
     return view('propuestas.generar');
-});
-
-Route::get('/empresas', function () {
-    return view('empresas.index');
-});
-
-Route::get('/empresas/create', function () {
-    return view('empresas.create');
-});
-
-Route::get('/empresas/{id}', function ($id) {
-    return view('empresas.show', ['id' => $id]);
-});
-
-Route::get('/personal', function () {
-    return view('personal.index');
-});
-
-Route::get('/personal/create', function () {
-    return view('personal.create');
 });
 
 Route::get('/formularios', function () {
@@ -134,12 +158,4 @@ Route::get('/documentos/{id}/descargar', function ($id) {
     }
 
     return response()->download($ruta, $documento->nombre_archivo);
-});
-
-Route::get('/entidades', function () {
-    return view('entidades.index');
-});
-
-Route::get('/entidades/create', function () {
-    return view('entidades.create');
 });

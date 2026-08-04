@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Persona;
 use App\Models\Proponente;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -11,7 +12,7 @@ class ProponenteController extends Controller
 {
     public function index()
     {
-        return Proponente::with('representanteLegal')->get();
+        return Proponente::with('representanteLegal')->orderBy('id_proponente')->get();
     }
 
     public function store(Request $request)
@@ -33,18 +34,23 @@ class ProponenteController extends Controller
 
         $validated = $this->normalizarDatos($validated);
 
+        $this->validarRepresentanteLegal($validated['representante_legal_id'] ?? null);
         $this->validarNitDuplicado($validated['nit'] ?? null);
 
         return Proponente::create($validated);
     }
 
-    public function show(Proponente $proponente)
+    public function show($id)
     {
+        $proponente = Proponente::where('id_proponente', $id)->firstOrFail();
+
         return $proponente->load('representanteLegal', 'personal', 'convocatorias');
     }
 
-    public function update(Request $request, Proponente $proponente)
+    public function update(Request $request, $id)
     {
+        $proponente = Proponente::where('id_proponente', $id)->firstOrFail();
+
         $validated = $request->validate([
             'razon_social' => 'nullable|string|max:255',
             'nombre_comercial' => 'nullable|string|max:255',
@@ -62,6 +68,8 @@ class ProponenteController extends Controller
 
         $validated = $this->normalizarDatos($validated);
 
+        $this->validarRepresentanteLegal($validated['representante_legal_id'] ?? null);
+
         $this->validarNitDuplicado(
             $validated['nit'] ?? null,
             $proponente->id_proponente
@@ -69,14 +77,29 @@ class ProponenteController extends Controller
 
         $proponente->update($validated);
 
-        return $proponente;
+        return $proponente->load('representanteLegal');
     }
 
-    public function destroy(Proponente $proponente)
+    public function destroy($id)
     {
+        $proponente = Proponente::where('id_proponente', $id)->firstOrFail();
+
         $proponente->delete();
 
         return response()->noContent();
+    }
+
+    private function validarRepresentanteLegal(?int $idPersona): void
+    {
+        if ($idPersona === null) {
+            return;
+        }
+
+        if (!Persona::where('id_persona', $idPersona)->exists()) {
+            throw ValidationException::withMessages([
+                'representante_legal_id' => ['El representante legal seleccionado no existe.'],
+            ]);
+        }
     }
 
     private function validarNitDuplicado(?string $nit, ?int $idProponenteActual = null): void

@@ -19,6 +19,9 @@ class ConvocatoriaPersonal extends Model
         'es_firmante',
         'orden_firma',
         'activo',
+        'cv_pdf',
+        'cv_nombre_original',
+        'cv_fecha_subida',
     ];
 
     public function convocatoria()

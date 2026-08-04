@@ -145,9 +145,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </td>
 
                     <td class="px-6 py-4">
-                        <a href="/convocatorias/create?entidad=${entidad.id_entidad}" class="inline-flex px-3 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-500 text-sm font-semibold">
-                            Crear convocatoria
-                        </a>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="/entidades/${entidad.id_entidad}/edit" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm font-semibold">
+                                Editar
+                            </a>
+
+                            <a href="/convocatorias/create?entidad=${entidad.id_entidad}" class="inline-flex px-3 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-500 text-sm font-semibold">
+                                Crear convocatoria
+                            </a>
+                        </div>
                     </td>
                 </tr>
             `;

@@ -24,10 +24,6 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3">
-                <a id="btnGenerarDocumento" href="#" class="bg-amber-500 text-white px-5 py-3 rounded-2xl hover:bg-amber-400 shadow-lg shadow-amber-950/30 font-semibold text-center">
-                    Generar Word
-                </a>
-
                 <a href="/convocatorias" class="bg-white/10 text-white px-5 py-3 rounded-2xl hover:bg-white/20 border border-white/10 text-center">
                     Volver al listado
                 </a>
@@ -215,10 +211,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const personalConvocatoria = document.getElementById('personalConvocatoria');
     const totalPersonal = document.getElementById('totalPersonal');
 
-    let convocatoriaActual = null;
     let cargos = [];
 
-    document.getElementById('btnGenerarDocumento').href = `/formularios/generar?convocatoria=${convocatoriaId}`;
+    function escapar(texto) {
+        if (texto === null || texto === undefined) {
+            return '';
+        }
+
+        return String(texto)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#039;');
+    }
 
     function nombreCompleto(persona) {
         return [
@@ -240,10 +246,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         mensaje.innerHTML = texto;
+        mensaje.classList.remove('hidden');
     }
 
     async function obtenerJson(url) {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+
         const data = await response.json();
 
         if (!response.ok) {
@@ -269,7 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         cargos.forEach(cargo => {
             cargoSelect.innerHTML += `
                 <option value="${cargo.id_cargo}">
-                    ${cargo.nombre_cargo ?? 'Cargo sin nombre'}
+                    ${escapar(cargo.nombre_cargo ?? 'Cargo sin nombre')}
                 </option>
             `;
         });
@@ -307,15 +319,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             personaSelect.innerHTML += `
                 <option value="${persona.id_persona}" data-cargo="${persona.pivot?.id_cargo ?? ''}">
-                    ${nombre}${ci} · ${cargoEmpresa}
+                    ${escapar(nombre + ci + ' · ' + cargoEmpresa)}
                 </option>
             `;
         });
     }
 
     function pintarConvocatoria(convocatoria) {
-        convocatoriaActual = convocatoria;
-
         document.getElementById('tituloConvocatoria').textContent =
             convocatoria.numero_convocatoria ?? 'Detalle de convocatoria';
 
@@ -373,38 +383,152 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const cargo = obtenerNombreCargo(persona.pivot?.id_cargo);
                 const firmante = persona.pivot?.es_firmante ? 'Firmante' : 'No firmante';
                 const orden = persona.pivot?.orden_firma ?? '-';
+                const idAsignacion = persona.pivot?.id_convocatoria_personal;
+                const tieneCv = Boolean(persona.pivot?.cv_pdf);
+                const nombreCv = persona.pivot?.cv_nombre_original ?? 'CV cargado';
+
+                const bloqueCv = idAsignacion ? `
+                    <div class="mt-4 bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                        <p class="text-sm font-semibold text-slate-800 mb-3">
+                            Currículum PDF para este cargo
+                        </p>
+
+                        <div class="flex flex-col xl:flex-row xl:items-center gap-3">
+                            <input
+                                id="cv_${idAsignacion}"
+                                type="file"
+                                accept="application/pdf,.pdf"
+                                class="text-sm border border-slate-200 rounded-xl px-3 py-2 bg-white"
+                            >
+
+                            <button
+                                type="button"
+                                data-asignacion="${idAsignacion}"
+                                class="btnSubirCv inline-flex justify-center px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm font-semibold"
+                            >
+                                Subir CV
+                            </button>
+
+                            ${tieneCv ? `
+                                <a
+                                    href="/api/convocatoria-personal/${idAsignacion}/cv"
+                                    target="_blank"
+                                    class="inline-flex justify-center px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 text-sm font-semibold"
+                                >
+                                    Ver CV
+                                </a>
+
+                                <span class="text-xs text-slate-500">
+                                    ${escapar(nombreCv)}
+                                </span>
+                            ` : `
+                                <span class="text-xs text-slate-400">
+                                    Sin CV cargado
+                                </span>
+                            `}
+                        </div>
+                    </div>
+                ` : `
+                    <div class="mt-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl p-4 text-sm">
+                        No se pudo obtener el ID de asignación para subir CV.
+                    </div>
+                `;
 
                 return `
                     <div class="p-6 hover:bg-slate-50 transition">
                         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                             <div class="flex items-start gap-4">
                                 <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center font-black">
-                                    ${(persona.nombres ?? 'P').charAt(0)}
+                                    ${escapar((persona.nombres ?? 'P').charAt(0))}
                                 </div>
 
                                 <div>
-                                    <p class="font-bold text-slate-900">${nombre}</p>
-                                    <p class="text-sm text-slate-500">${persona.profesion ?? 'Sin profesión'} · ${cargo}</p>
-                                    <p class="text-xs text-slate-400 mt-1">CI: ${persona.ci ?? '-'}</p>
+                                    <p class="font-bold text-slate-900">${escapar(nombre)}</p>
+                                    <p class="text-sm text-slate-500">${escapar(persona.profesion ?? 'Sin profesión')} · ${escapar(cargo)}</p>
+                                    <p class="text-xs text-slate-400 mt-1">CI: ${escapar(persona.ci ?? '-')}</p>
                                 </div>
                             </div>
 
                             <div class="flex gap-2 flex-wrap">
                                 <span class="text-xs px-3 py-1 rounded-full bg-slate-50 text-slate-700 border border-slate-200">
-                                    ${firmante}
+                                    ${escapar(firmante)}
                                 </span>
 
                                 <span class="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-100">
-                                    Orden: ${orden}
+                                    Orden: ${escapar(orden)}
                                 </span>
                             </div>
                         </div>
+
+                        ${bloqueCv}
                     </div>
                 `;
             }).join('');
         }
 
         cargarPersonalEmpresaSelect(convocatoria);
+        activarBotonesCv();
+    }
+
+    function activarBotonesCv() {
+        document.querySelectorAll('.btnSubirCv').forEach(boton => {
+            boton.addEventListener('click', async () => {
+                const idAsignacion = boton.dataset.asignacion;
+                const input = document.getElementById(`cv_${idAsignacion}`);
+
+                if (!input || !input.files.length) {
+                    mostrarMensaje('Debe seleccionar un archivo PDF.', 'error');
+                    return;
+                }
+
+                const archivo = input.files[0];
+
+                if (archivo.type !== 'application/pdf') {
+                    mostrarMensaje('Solo se permite subir archivos PDF.', 'error');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('cv_pdf', archivo);
+
+                boton.disabled = true;
+                boton.textContent = 'Subiendo...';
+
+                try {
+                    const response = await fetch(`/api/convocatoria-personal/${idAsignacion}/cv`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                        },
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        console.error(result);
+
+                        let errores = '';
+
+                        if (result.errors) {
+                            errores = Object.values(result.errors).flat().join('<br>');
+                        }
+
+                        throw new Error(errores || result.message || 'No se pudo subir el CV.');
+                    }
+
+                    mostrarMensaje('CV subido correctamente.', 'success');
+
+                    await cargarConvocatoria();
+
+                } catch (error) {
+                    mostrarMensaje(error.message, 'error');
+                } finally {
+                    boton.disabled = false;
+                    boton.textContent = 'Subir CV';
+                }
+            });
+        });
     }
 
     async function cargarConvocatoria() {

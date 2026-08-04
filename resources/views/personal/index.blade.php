@@ -127,6 +127,7 @@
                         <th class="text-left px-6 py-4">Correo</th>
                         <th class="text-left px-6 py-4">Profesión</th>
                         <th class="text-left px-6 py-4">Dirección</th>
+                        <th class="text-left px-6 py-4">Acción</th>
                     </tr>
                 </thead>
 
@@ -184,14 +185,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         mensajeImportacion.innerHTML = texto;
+        mensajeImportacion.classList.remove('hidden');
     }
 
     async function cargarPersonal() {
         loading.classList.remove('hidden');
         error.classList.add('hidden');
+        tablaContainer.classList.add('hidden');
 
         try {
-            const response = await fetch('/api/personas');
+            const response = await fetch('/api/personas', {
+                headers: {
+                    'Accept': 'application/json',
+                }
+            });
+
             const data = await response.json();
 
             if (!response.ok) {
@@ -209,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (personas.length === 0) {
                 personalBody.innerHTML =
                     '<tr>' +
-                        '<td colspan="6" class="px-6 py-8 text-center text-slate-500">' +
+                        '<td colspan="7" class="px-6 py-8 text-center text-slate-500">' +
                             'No hay personal registrado todavía.' +
                         '</td>' +
                     '</tr>';
@@ -272,6 +280,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             '<span class="line-clamp-2">' +
                                 escapar(persona.direccion || '-') +
                             '</span>' +
+                        '</td>' +
+
+                        '<td class="px-6 py-4">' +
+                            '<a href="/personal/' + escapar(persona.id_persona) + '/edit" class="inline-flex px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 text-sm font-semibold">' +
+                                'Editar' +
+                            '</a>' +
                         '</td>' +
                     '</tr>';
             });
@@ -349,7 +363,6 @@ document.addEventListener('DOMContentLoaded', function () {
             );
 
             importarForm.reset();
-
             nombreArchivoCsv.textContent = 'Ningún archivo seleccionado';
 
             await cargarPersonal();

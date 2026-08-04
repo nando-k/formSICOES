@@ -56,7 +56,15 @@ class Convocatoria extends Model
             'contratacion.convocatoria_personal',
             'id_convocatoria',
             'id_persona'
-        )->withPivot('id_cargo', 'es_firmante', 'orden_firma', 'activo')
-         ->withTimestamps();
+        )->withPivot(
+            'id_convocatoria_personal',
+            'id_cargo',
+            'es_firmante',
+            'orden_firma',
+            'activo',
+            'cv_pdf',
+            'cv_nombre_original',
+            'cv_fecha_subida'
+        )->withTimestamps();
     }
 }
